@@ -1,0 +1,415 @@
+/**
+ * test-automation-framework — Jenkins Declarative Pipeline
+ *
+ * Production-grade CI/CD pipeline for automated regression test execution.
+ *
+ * Key capabilities demonstrated:
+ *   - Two-way Slack integration: QA triggers runs from Slack, results post back automatically
+ *   - Salesforce CLI installation and authentication (no MFA) via SFDX URL
+ *   - Salesforce access token extraction and injection into Java test execution
+ *   - Automatic retry logic: up to 3 attempts with VP pass/fail tracking per attempt
+ *   - XML result parsing to determine pass/fail/exception status
+ *   - Multi-attempt HTML report index linking all attempt reports
+ *   - Dual Slack channel notifications: external (QA team) + internal (automation team)
+ *   - XRay/Jira integration for test result reporting
+ *   - Xvfb virtual display for headless browser execution on Linux agents
+ */
+
+pipeline {
+    agent {
+        label 'automation-maven-agent'
+    }
+
+    environment {
+        // ── Source Control ───────────────────────────────────────────────────
+        GIT_CREDENTIAL_ID = 'github-credentials'
+        GIT_URI           = 'github.com/<your-username>/test-automation-framework.git'
+        GIT_BRANCH        = 'main'
+
+        // ── Test Configuration ───────────────────────────────────────────────
+        TEST_TITLE           = 'Regression Test Suite'
+        SETTINGS_XML_FILE_ID = 'maven-settings-xml'
+        EXEC_PATH            = 'testScripts.execution.RegressionTestScript'
+
+        // ── Test Data & Auth ─────────────────────────────────────────────────
+        LOCAL_DATASET_ID     = 'local-dataset'
+        XRAY_JIRA_ID         = 'jiraToken'
+        XRAY_AUTH_PROPERTIES = 'authKey'
+
+        // ── Slack Configuration ──────────────────────────────────────────────
+        // Two channels: external for QA team updates, internal for automation team alerts
+        TEAM_DOMAIN            = 'your-workspace'
+        SLACK_EXTERNAL_CHANNEL = 'qa-automation-results'
+        SLACK_INTERNAL_CHANNEL = 'automation-team-alerts'
+        SLACK_TOKEN_ID         = 'slack-bot-token'
+
+        // ── Salesforce CLI ───────────────────────────────────────────────────
+        SF_CLI_PATH           = "${env.WORKSPACE}/sf-download/sf/bin"
+        SF_AUTH_CREDENTIAL_ID = 'SALESFORCE_SFDX_AUTH_URL'
+    }
+
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '30'))
+        timestamps()
+        timeout(time: 90, unit: 'MINUTES')
+    }
+
+    triggers {
+        cron('0 6 * * 1-5')
+    }
+
+    stages {
+
+        // ─────────────────────────────────────────────────────────────────────
+        // Stage 1: Confirm Slack Trigger
+        //
+        // Immediately notifies the QA channel that the pipeline has started.
+        // Prevents duplicate trigger clicks — QA knows it's queued within seconds.
+        // ─────────────────────────────────────────────────────────────────────
+        stage('Start Confirmation') {
+            steps {
+                script {
+                    slackSend(
+                        color:             "#87CEEB",
+                        message:           "Start Test button for *${TEST_TITLE}* has been clicked successfully.\n" +
+                                           "Please do not click again. The test will begin within 5 minutes.",
+                        teamDomain:        "${TEAM_DOMAIN}",
+                        channel:           "${SLACK_EXTERNAL_CHANNEL}",
+                        tokenCredentialId: "${SLACK_TOKEN_ID}"
+                    )
+                }
+            }
+        }
+
+        // ─────────────────────────────────────────────────────────────────────
+        // Stage 2: Clone Repository
+        // ─────────────────────────────────────────────────────────────────────
+        stage('Clone') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId:    "${GIT_CREDENTIAL_ID}",
+                    usernameVariable: 'USERNAME',
+                    passwordVariable: 'PASSWORD'
+                )]) {
+                    sh 'git clone -b ' + GIT_BRANCH + ' https://' + USERNAME + ':' + PASSWORD + '@' + GIT_URI
+                }
+            }
+        }
+
+        // ─────────────────────────────────────────────────────────────────────
+        // Stage 3: Install Salesforce CLI
+        //
+        // Downloads SF CLI on the agent if not cached from a previous run.
+        // Caching check prevents re-downloading on every build (~2 min saved).
+        // ─────────────────────────────────────────────────────────────────────
+        stage('Install Salesforce CLI') {
+            steps {
+                container('maven') {
+                    sh '''
+                        set -e
+                        if [ -f "${WORKSPACE}/sf-download/sf/bin/sf" ]; then
+                            echo "Salesforce CLI already installed — skipping download."
+                        else
+                            echo "Installing Salesforce CLI..."
+                            mkdir -p ${WORKSPACE}/sf-download
+                            cd ${WORKSPACE}/sf-download
+                            wget -q https://developer.salesforce.com/media/salesforce-cli/sf/channels/stable/sf-linux-x64.tar.xz
+                            tar xJf sf-linux-x64.tar.xz
+                            echo "SF CLI installation complete."
+                        fi
+                        export PATH=${SF_CLI_PATH}:$PATH
+                        sf --version
+                    '''
+                }
+            }
+        }
+
+        // ─────────────────────────────────────────────────────────────────────
+        // Stage 4: Build
+        // ─────────────────────────────────────────────────────────────────────
+        stage('Build') {
+            steps {
+                container('maven') {
+                    dir('test-automation-framework') {
+                        configFileProvider([configFile(fileId: "${SETTINGS_XML_FILE_ID}", variable: 'MAVEN_SETTINGS_XML')]) {
+                            sh 'mvn -s ${MAVEN_SETTINGS_XML} clean compile install -q'
+                        }
+                    }
+                }
+            }
+        }
+
+        // ─────────────────────────────────────────────────────────────────────
+        // Stage 5: Salesforce Authentication
+        //
+        // Authenticates using SFDX URL — no MFA, no browser popup.
+        // Credential stored in Jenkins as a secret string.
+        // Auth file written to temp path and deleted immediately after use.
+        // ─────────────────────────────────────────────────────────────────────
+        stage('Salesforce Authentication') {
+            steps {
+                container('maven') {
+                    dir('test-automation-framework') {
+                        withCredentials([string(credentialsId: "${SF_AUTH_CREDENTIAL_ID}", variable: 'SFDX_AUTH_URL')]) {
+                            sh '''
+                                set -e
+                                export PATH=${SF_CLI_PATH}:$PATH
+                                echo "Authenticating to Salesforce (no MFA)..."
+                                AUTH_FILE=$(mktemp)
+                                echo "${SFDX_AUTH_URL}" > ${AUTH_FILE}
+                                sf org login sfdx-url \
+                                    --sfdx-url-file ${AUTH_FILE} \
+                                    --alias automation-user \
+                                    --set-default
+                                rm -f ${AUTH_FILE}
+                                echo "Authentication successful."
+                                sf org display --target-org automation-user
+                            '''
+                        }
+                    }
+                }
+            }
+        }
+
+        // ─────────────────────────────────────────────────────────────────────
+        // Stage 6: Extract Salesforce Access Token
+        //
+        // Parses SF CLI JSON output to extract access token and instance URL.
+        // These are injected as -D system properties into the Maven test run.
+        // ─────────────────────────────────────────────────────────────────────
+        stage('Extract Salesforce Token') {
+            steps {
+                container('maven') {
+                    dir('test-automation-framework') {
+                        script {
+                            sh '''
+                                export PATH=${SF_CLI_PATH}:$PATH
+                                sf org display --target-org automation-user --json > org_info.json
+                            '''
+                            def orgInfo         = readJSON file: 'test-automation-framework/org_info.json'
+                            env.SF_ACCESS_TOKEN = orgInfo.result.accessToken
+                            env.SF_INSTANCE_URL = orgInfo.result.instanceUrl
+                            echo "Token extracted. Instance: ${env.SF_INSTANCE_URL}"
+                        }
+                    }
+                }
+            }
+        }
+
+        // ─────────────────────────────────────────────────────────────────────
+        // Stage 7: Execute Tests
+        //
+        // Core execution with:
+        //   - Xvfb virtual display for headless Chrome on Linux agent
+        //   - XRay/Jira auth file injection for result reporting
+        //   - Local dataset injection via Jenkins secret file
+        //   - Retry loop: up to 3 attempts on VP failure or exception
+        //   - VP counts parsed from XML results after each attempt
+        //   - Per-attempt artifacts archived independently
+        //   - Multi-attempt HTML index report generated
+        // ─────────────────────────────────────────────────────────────────────
+        stage('Execute Tests') {
+            steps {
+                script {
+                    def currentTime = new Date().format("yyyy-MM-dd HH:mm:ss z")
+                    slackSend(
+                        color:             "#87CEEB",
+                        message:           ":white_check_mark: *${TEST_TITLE}* has started. Hang tight!\n" +
+                                           "Start Time: ${currentTime}\n" +
+                                           "Results will be posted in approximately 15 minutes.",
+                        teamDomain:        "${TEAM_DOMAIN}",
+                        channel:           "${SLACK_EXTERNAL_CHANNEL}",
+                        tokenCredentialId: "${SLACK_TOKEN_ID}"
+                    )
+                }
+
+                container('maven') {
+                    dir('test-automation-framework') {
+
+                        sh 'Xvfb :20 -screen 0 2048x2048x24 &'
+
+                        withCredentials([file(credentialsId: "${XRAY_JIRA_ID}", variable: 'Xray')]) {
+                            sh 'mkdir -p /Automation/Tools && cp ${Xray} /Automation/Tools/xray_server_auth.properties'
+                        }
+                        withCredentials([file(credentialsId: "${XRAY_AUTH_PROPERTIES}", variable: 'xray_props')]) {
+                            sh 'mkdir -p /Automation/Tools/properties && cp ${xray_props} /Automation/Tools/properties/auth.key'
+                        }
+                        withCredentials([file(credentialsId: "${LOCAL_DATASET_ID}", variable: 'datasets')]) {
+                            sh 'unzip -o -q ${datasets}'
+                        }
+
+                        script {
+                            def attempt      = 0
+                            def maxAttempts  = 3
+                            def testPassed   = false
+                            def allVpResults = ""
+
+                            configFileProvider([configFile(fileId: "${SETTINGS_XML_FILE_ID}", variable: 'MAVEN_SETTINGS_XML')]) {
+
+                                while (attempt < maxAttempts && !testPassed) {
+                                    attempt++
+                                    echo "─── Test Attempt #${attempt} of ${maxAttempts} ───"
+                                    sh 'rm -rf testResults/* || true'
+
+                                    sh """
+                                        export PATH=${SF_CLI_PATH}:\$PATH
+                                        mvn -s ${MAVEN_SETTINGS_XML} exec:java \
+                                            -Dexec.mainClass='${EXEC_PATH}' \
+                                            -DSF_ACCESS_TOKEN=${SF_ACCESS_TOKEN} \
+                                            -DSF_INSTANCE_URL=${SF_INSTANCE_URL}
+                                    """
+
+                                    def resultsFolder = sh(script: 'ls -td testResults/*_Logs/ | head -1', returnStdout: true).trim()
+                                    def resultsXml    = sh(script: "ls -td ${resultsFolder}/*.xml | head -1", returnStdout: true).trim()
+
+                                    def vpPass      = sh(script: "grep -o '<pass>true</pass>' ${resultsXml} | wc -l",       returnStdout: true).trim()
+                                    def vpFail      = sh(script: "grep -o '<pass>false</pass>' ${resultsXml} | wc -l",      returnStdout: true).trim()
+                                    def vpException = sh(script: "grep -o '<exception>true</exception>' ${resultsXml} | wc -l", returnStdout: true).trim()
+
+                                    allVpResults += "Attempt #${attempt} — VP Pass: ${vpPass}, VP Fail: ${vpFail}, Exceptions: ${vpException}\n"
+                                    echo allVpResults
+
+                                    sh "mkdir -p testResults_Attempt${attempt} && cp -r ${resultsFolder}/* testResults_Attempt${attempt}/"
+
+                                    if (vpException.toInteger() != 0) {
+                                        echo "Attempt #${attempt} failed — Exceptions: ${vpException}"
+                                    } else if (vpFail.toInteger() != 0) {
+                                        echo "Attempt #${attempt} failed — VP Failures: ${vpFail}"
+                                    } else {
+                                        echo "Attempt #${attempt} PASSED."
+                                        testPassed = true
+                                    }
+                                }
+
+                                env.TEST_ATTEMPT             = "${attempt}"
+                                env.ALL_VP_RESULTS           = allVpResults
+                                env.TEST_PASSED_AT_ANY_POINT = "${testPassed}"
+
+                                // Build multi-attempt report index
+                                def htmlIndex = "<html><head><title>${TEST_TITLE} — All Attempts</title>" +
+                                    "<style>body{font-family:Arial,sans-serif;margin:20px;} h2{color:#333366;} h3{color:#336699;} .section{border-bottom:1px solid #eee;padding-bottom:10px;margin-top:20px;}</style></head>" +
+                                    "<body><h2>${TEST_TITLE} — All Attempts</h2>"
+
+                                for (int i = 1; i <= attempt; i++) {
+                                    def f = sh(script: "ls testResults_Attempt${i}/*.html | head -1", returnStdout: true).trim()
+                                    def n = sh(script: "basename ${f}", returnStdout: true).trim()
+                                    htmlIndex += "<div class='section'><h3>Attempt ${i}</h3>"
+                                    htmlIndex += "<a href='../testResults_Attempt${i}/${n}'>View Report — Attempt ${i}</a></div>"
+                                }
+
+                                htmlIndex += "</body></html>"
+                                writeFile file: 'testResults/TestReport.html', text: htmlIndex
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // ─────────────────────────────────────────────────────────────────────
+        // Stage 8: Reporting
+        //
+        // Sets final build status, archives all artifacts, publishes HTML report.
+        // ─────────────────────────────────────────────────────────────────────
+        stage('Reporting') {
+            steps {
+                container('maven') {
+                    dir('test-automation-framework') {
+                        script {
+                            def resultsFolder = sh(script: 'ls -td testResults/*_Logs/ | head -1', returnStdout: true).trim()
+                            def resultsHtml   = sh(script: "ls -td ${resultsFolder}/*.html | head -1", returnStdout: true).trim()
+                            def resultsXml    = sh(script: "ls -td ${resultsFolder}/*.xml | head -1", returnStdout: true).trim()
+                            def htmlFileName  = sh(script: "basename ${resultsHtml}", returnStdout: true).trim()
+
+                            env.REPORT_URL      = "${env.BUILD_URL}artifact/testResults/TestReport.html"
+                            env.REPORT_URL_LINK = "<${env.REPORT_URL}|View Report>"
+
+                            if (env.TEST_PASSED_AT_ANY_POINT != "true") {
+                                def finalException = sh(script: "grep -o '<exception>true</exception>' ${resultsXml} | wc -l", returnStdout: true).trim()
+                                def finalFail      = sh(script: "grep -o '<pass>false</pass>' ${resultsXml} | wc -l", returnStdout: true).trim()
+
+                                if (finalException.toInteger() != 0)  { unstable("VP Exception detected") }
+                                else if (finalFail.toInteger() != 0)  { unstable("VP Failure detected") }
+                            }
+                        }
+
+                        archiveArtifacts artifacts: "testResults/**/*",          allowEmptyArchive: true, fingerprint: true, onlyIfSuccessful: false
+                        archiveArtifacts artifacts: "testResults_Attempt*/**/*", allowEmptyArchive: true, fingerprint: true
+                        archiveArtifacts artifacts: "testResults/TestReport.html", fingerprint: true
+
+                        publishHTML(target: [
+                            allowMissing: false, alwaysLinkToLastBuild: true, keepAll: true,
+                            reportDir:   "${resultsFolder}",
+                            reportFiles: "${htmlFileName}",
+                            reportName:  "${TEST_TITLE} Report"
+                        ])
+                    }
+                }
+            }
+        }
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    //  Post — Slack Notifications + Cleanup
+    //
+    //  SUCCESS  → external channel only
+    //  UNSTABLE → both channels (external: clean fail; internal: full VP details)
+    //  FAILURE  → both channels (build-level failure)
+    // ─────────────────────────────────────────────────────────────────────────
+    post {
+        always {
+            container('maven') {
+                sh '''
+                    export PATH=${SF_CLI_PATH}:$PATH || true
+                    sf org logout --target-org automation-user --no-prompt || true
+                    echo "Salesforce session cleanup complete."
+                '''
+            }
+            junit allowEmptyResults: true, testResults: 'testResults/**/*.xml'
+            archiveArtifacts artifacts: 'testResults/**/*', allowEmptyArchive: true, fingerprint: true
+        }
+
+        success {
+            slackSend(
+                color: "good",
+                message: ":white_check_mark: *${TEST_TITLE} PASSED*\n" +
+                         "Duration: ${currentBuild.durationString.minus(' and counting')}\n" +
+                         "Report: ${env.REPORT_URL_LINK}",
+                teamDomain: "${TEAM_DOMAIN}", channel: "${SLACK_EXTERNAL_CHANNEL}", tokenCredentialId: "${SLACK_TOKEN_ID}"
+            )
+        }
+
+        failure {
+            slackSend(
+                color: "danger",
+                message: ":rotating_light: *Pipeline Failure* — ${env.JOB_NAME} #${env.BUILD_NUMBER}\n<${env.BUILD_URL}|Open Build>",
+                teamDomain: "${TEAM_DOMAIN}", channel: "${SLACK_INTERNAL_CHANNEL}", tokenCredentialId: "${SLACK_TOKEN_ID}"
+            )
+            slackSend(
+                color: "danger",
+                message: ":x: *${TEST_TITLE} FAILED TO EXECUTE*\nThe automation team has been notified. Please resume manually.",
+                teamDomain: "${TEAM_DOMAIN}", channel: "${SLACK_EXTERNAL_CHANNEL}", tokenCredentialId: "${SLACK_TOKEN_ID}"
+            )
+        }
+
+        unstable {
+            script {
+                slackSend(
+                    color: "warning",
+                    message: ":warning: *${TEST_TITLE} — Failure Detected* (Internal)\n" +
+                             "Build: <${env.BUILD_URL}|#${env.BUILD_NUMBER}> | Attempts: ${env.TEST_ATTEMPT}\n" +
+                             "Duration: ${currentBuild.durationString.minus(' and counting')}\n" +
+                             "${env.ALL_VP_RESULTS}Report: ${env.REPORT_URL_LINK}\n:rotating_light: Investigation required.",
+                    teamDomain: "${TEAM_DOMAIN}", channel: "${SLACK_INTERNAL_CHANNEL}", tokenCredentialId: "${SLACK_TOKEN_ID}"
+                )
+                slackSend(
+                    color: "warning",
+                    message: ":x: *${TEST_TITLE} FAILED*\n" +
+                             "Duration: ${currentBuild.durationString.minus(' and counting')}\n" +
+                             "The automation team has been informed. Please resume manually.\nReport: ${env.REPORT_URL_LINK}",
+                    teamDomain: "${TEAM_DOMAIN}", channel: "${SLACK_EXTERNAL_CHANNEL}", tokenCredentialId: "${SLACK_TOKEN_ID}"
+                )
+            }
+        }
+    }
+}
