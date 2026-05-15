@@ -1,0 +1,19 @@
+package com.buchirano.automation.pages.application.cameo;
+
+import com.buchirano.automation.pages.general.BasePageClass;
+import com.buchirano.automation.core.AutomatedObject;
+
+/**
+ * Page class for the Special Guidance modal within CaMEO Case Establishment.
+ *
+ * <p><b>Modal:</b> Special Guidance</p>
+ * <p><b>Layer:</b> Page Object (Application — CaMEO)</p>
+ */
+public class SpecialGuidancePage extends BasePageClass {
+
+    public String cemeteryLabelElementSelector = "//*[@class='slds-modal__header']/h2";
+    public String cemeteryInstLabelElementSelector = "//*[@class='slds-modal__container']/section/div";
+
+    public AutomatedObject getCemeteryLabel() { scrollIntoView(cemeteryLabelElementSelector); return getElementByXPath(cemeteryLabelElementSelector); }
+    public AutomatedObject getInstructionsLabel() { scrollIntoView(cemeteryInstLabelElementSelector); return getElementByXPath(cemeteryInstLabelElementSelector); }
+}
