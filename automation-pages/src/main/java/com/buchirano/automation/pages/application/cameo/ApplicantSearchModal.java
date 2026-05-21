@@ -4,12 +4,12 @@ import com.buchirano.automation.enums.Gender;
 import com.buchirano.automation.core.AutomatedObject;
 
 /**
- * Page class for the Veteran Search modal within CaMEO Case Establishment.
+ * Page class for the Applicant Search modal within NexusCM Case Management.
  *
- * <p><b>Modal:</b> Veteran Search</p>
- * <p><b>Layer:</b> Page Object (Application — CaMEO)</p>
+ * <p><b>Modal:</b> Applicant Search</p>
+ * <p><b>Layer:</b> Page Object (Application — NexusCM)</p>
  */
-public class VeteranSearchModal extends ModalPageClass {
+public class ApplicantSearchModal extends ModalPageClass {
 
     @Override
     public AutomatedObject getSearchButton() { return getButtonByDataId("searchButton"); }
@@ -22,13 +22,13 @@ public class VeteranSearchModal extends ModalPageClass {
     public AutomatedObject birthdateField() { return getInputByDataId("contactModalDOB"); }
     public AutomatedObject icnField() { return getInputByDataId("contactModalICN"); }
     public AutomatedObject edipiField() { return getInputByDataId("contactModalEDIPI"); }
-    public AutomatedObject veteranIdField() { return getInputByDataId("contactModalId"); }
+    public AutomatedObject applicantIdField() { return getInputByDataId("contactModalId"); }
     public AutomatedObject genderField() { return getElementBy("data-id", "contactModalGender"); }
     public AutomatedObject phoneField() { return getInputByDataId("contactModalPhone"); }
     public AutomatedObject mothersMaidenNameField() { return getInputByDataId("contactModalMothersMaidenName"); }
     public AutomatedObject birthStateField() { return getElementBy("data-id", "contactModalBirthState"); }
     public AutomatedObject birthCityField() { return getInputByDataId("contactModalBirthCity"); }
-    public AutomatedObject getVeteranIdField() { return getElementBy("data-id", "contactModalId"); }
+    public AutomatedObject getApplicantIdField() { return getElementBy("data-id", "contactModalId"); }
     public AutomatedObject getNoRecordsFoundXpath() { return getElementByXPath("//*[@data-id='resultsMessage']//h2"); }
 
     public void enterContactSearchValues(String firstName, String middleName, String lastName,

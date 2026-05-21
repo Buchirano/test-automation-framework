@@ -1,49 +1,88 @@
 # test-automation-framework
 
-> A production-grade Java + Selenium + TestNG regression automation framework with Jenkins CI/CD pipeline and Slack integration.
+**A production-grade Java + Selenium + TestNG automation framework with Jenkins CI/CD, Slack integration, and multi-environment Salesforce Lightning support — designed and built from scratch.**
+
+![Java](https://img.shields.io/badge/Java-11%2B-ED8B00?logo=java&logoColor=white)
+![Selenium](https://img.shields.io/badge/Selenium-4.x-43B02A?logo=selenium&logoColor=white)
+![TestNG](https://img.shields.io/badge/TestNG-7.x-FF6C37)
+![Jenkins](https://img.shields.io/badge/Jenkins-CI%2FCD-D24939?logo=jenkins&logoColor=white)
+![GitHub Actions](https://img.shields.io/badge/GitHub-Actions-2088FF?logo=github-actions&logoColor=white)
 
 ---
 
 ## Overview
 
-This framework automates regression testing for web applications using a **3-layer Page Object Model** architecture inspired by enterprise ATI (Automation Tool Interface) patterns. It converts manual test cases into fully automated scripts that run daily in Jenkins and deliver results directly to Slack.
+This framework delivers end-to-end automated regression testing for enterprise Salesforce Lightning applications. It is built on a strict 3-layer Page Object Model architecture that separates element locators, interaction logic, and test orchestration into independently maintainable layers. Tests run daily on Jenkins and deliver results directly to Slack — no Jenkins access required for QA teams.
 
-**Key capabilities:**
-- Java + Selenium WebDriver automation with a reusable, maintainable Page Object Model
-- TestNG test execution with data-driven test support
-- Jenkins declarative pipeline — daily scheduled runs + on-demand via Slack
-- Two-way Slack integration: QA triggers pipelines from Slack, results post back automatically
-- ExtentReports HTML reporting with verification point (VP) pass/fail details
-- Headless Chrome execution on CI agents with configurable screen resolution
-- Maven-based dependency management and build lifecycle
+**Highlights:**
+- Full Salesforce Lightning UI automation with robust XPath targeting and `waitForSalesforceLoad` synchronization
+- 3-layer POM: Core base class, application page classes (from `automation-pages`), and modular + execution test scripts (from `automation-scripts`)
+- Jenkins declarative pipeline with Salesforce CLI authentication, multi-attempt retry logic, and VP (verification point) pass/fail tracking
+- Two-way Slack integration: QA team triggers pipeline runs from Slack and receives results automatically
+- XRay/Jira integration for test result reporting and traceability
+- Multi-environment support: dev, qa, staging, uat — config-driven with no code changes required
+- Headless Chrome execution via Xvfb on Linux CI agents
 
 ---
 
 ## Architecture
 
-The framework follows a strict 3-layer separation of concerns:
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  EXECUTION TEST SCRIPTS  (automation-scripts/execution/)        │
+│  Full end-to-end regression flows — orchestrate modular tests   │
+│  One script per application module and dataset                  │
+└──────────────────────────┬──────────────────────────────────────┘
+                           │ calls
+┌──────────────────────────▼──────────────────────────────────────┐
+│  MODULAR TEST SCRIPTS  (automation-scripts/modular/)            │
+│  Single-screen tests — focused, reusable, independently runnable│
+│  JSON DataProvider-driven with external test datasets           │
+└──────────────────────────┬──────────────────────────────────────┘
+                           │ uses
+┌──────────────────────────▼──────────────────────────────────────┐
+│  PAGE OBJECT LIBRARY  (automation-pages/)                       │
+│  One class per application screen                               │
+│  Enum-driven field interactions, null-safe conditionals         │
+│  Salesforce Lightning compatibility patterns                    │
+└──────────────────────────┬──────────────────────────────────────┘
+                           │ extends
+┌──────────────────────────▼──────────────────────────────────────┐
+│  FRAMEWORK CORE  (src/main/java/)                               │
+│  BasePageClass — abstract WebDriver wrapper with all utilities  │
+│  DriverManager — thread-safe WebDriver lifecycle management     │
+│  ConfigProperties — environment-aware config reader             │
+└─────────────────────────────────────────────────────────────────┘
+```
 
-```
-┌─────────────────────────────────────────────────────┐
-│  TEST SCRIPTS  (tests/)                             │
-│  TestNG test classes — test scenarios & assertions  │
-│  Written by QA / Automation Engineers               │
-└──────────────────────┬──────────────────────────────┘
-                       │ uses
-┌──────────────────────▼──────────────────────────────┐
-│  PAGE CLASSES  (pages/)                             │
-│  Page Object Model — one class per application page │
-│  Encapsulates all element locators & interactions   │
-│  Written in Java following strict naming conventions│
-└──────────────────────┬──────────────────────────────┘
-                       │ extends
-┌──────────────────────▼──────────────────────────────┐
-│  AUTOMATION CORE  (base/ + utils/)                  │
-│  BasePageClass — abstract WebDriver wrapper         │
-│  DriverManager — thread-safe WebDriver lifecycle    │
-│  ConfigProperties — config.properties reader        │
-└─────────────────────────────────────────────────────┘
-```
+---
+
+## Features
+
+- **Salesforce Lightning automation** — designed specifically for the complexities of Salesforce Lightning UI: shadow DOM, dynamic XPath, `data-id` attribute targeting, JS click fallbacks, and `waitForSalesforceLoad` synchronization
+- **3-layer Page Object Model** — clean separation between locators, interaction logic, and test assertions
+- **Multi-attempt retry pipeline** — Jenkins retries failed test runs up to 3 times, tracking VP pass/fail/exception counts per attempt
+- **Salesforce CLI authentication** — automated SFDX URL authentication without MFA; token injected directly into test execution
+- **Two-way Slack integration** — QA team triggers runs via Slack workflow shortcuts; results post back automatically with VP summary and report link
+- **XRay reporting** — test results pushed to XRay/Jira for full traceability against requirements
+- **Multi-environment config** — single codebase runs across dev, qa, staging, and uat without code changes
+- **Modular + execution test layers** — modular tests run independently for development; execution tests chain the full workflow for regression
+
+---
+
+## Tech Stack
+
+| Tool | Version | Purpose |
+|---|---|---|
+| Java | 11+ | Primary automation language |
+| Selenium WebDriver | 4.x | Browser automation engine |
+| TestNG | 7.x | Test execution, DataProvider, and suites |
+| Maven | 3.8+ | Build and dependency management |
+| Jenkins | 2.4x+ | CI/CD pipeline orchestration |
+| Salesforce CLI | Latest stable | SFDX authentication and org management |
+| Slack API | — | Pipeline trigger and result notification |
+| XRay | — | Jira test result reporting |
+| Xvfb | — | Virtual display for headless Linux execution |
 
 ---
 
@@ -53,124 +92,90 @@ The framework follows a strict 3-layer separation of concerns:
 test-automation-framework/
 ├── src/main/java/
 │   ├── base/
-│   │   └── BasePageClass.java       # Abstract base — all page classes extend this
+│   │   └── BasePageClass.java         # Abstract WebDriver wrapper — all page classes extend this
 │   ├── pages/
-│   │   └── LoginPage.java           # Example page class
+│   │   └── LoginPage.java             # Application login page class
 │   ├── tests/
-│   │   └── LoginTest.java           # Example TestNG test suite
+│   │   └── LoginTest.java             # Example regression test
 │   └── utils/
-│       ├── ConfigProperties.java    # Reads config.properties
-│       └── DriverManager.java       # Thread-safe WebDriver management
+│       ├── ConfigProperties.java      # config.properties reader with runtime override support
+│       └── DriverManager.java         # Thread-safe WebDriver lifecycle management
+├── automation-pages/                  # Page Object Model library (application module)
+│   └── src/main/java/.../pages/
+│       ├── application/cameo/         # NexusCM case management page classes (20+ pages)
+│       ├── application/cerrt/         # PortalRM resource management page classes (9 pages)
+│       ├── general/                   # Shared page classes (LoginPage, CaseDetailsPage)
+│       └── enums/                     # 28+ enum classes for dropdown and field values
+├── automation-scripts/
+│   └── README.md                      # Test scripts module documentation
 ├── config/
-│   └── config.properties            # Browser, URL, wait, and test settings
+│   └── config.properties              # Browser, URL, wait, and test configuration
 ├── jenkins/
-│   └── Jenkinsfile                  # Declarative CI/CD pipeline
+│   └── Jenkinsfile                    # 8-stage declarative CI/CD pipeline
 ├── slack-integration/
-│   └── README.md                    # Slack ↔ Jenkins setup guide
-├── reports/                         # Generated HTML reports (gitignored)
-└── pom.xml                          # Maven dependencies and build config
+│   └── README.md                      # Slack + Jenkins workflow setup guide
+└── pom.xml                            # Maven build configuration
 ```
 
 ---
 
-## Naming Conventions
+## How to Run
 
-Page class methods follow strict ATI-style camelCase conventions:
-
-| Prefix    | Purpose                                 | Example                        |
-|-----------|-----------------------------------------|--------------------------------|
-| `get*()`  | Returns element reference (private)     | `getLoginButton()`             |
-| `set*()`  | Enters a value into a field             | `setUsername(String username)` |
-| `read*()` | Reads and returns a page value          | `readErrorMessage()`           |
-| `click*()` | Clicks a control, waits for page load  | `clickLoginButton()`           |
-| `select*()` | Selects a dropdown option             | `selectFacilityCode(String)`   |
-| `is*()`   | Returns boolean for state checks        | `isLoginButtonEnabled()`       |
-
----
-
-## Running Tests Locally
-
-**Prerequisites:** Java 11+, Maven 3.8+, Chrome browser installed
+**Prerequisites:** Java 11+, Maven 3.8+, Chrome browser
 
 ```bash
 # Clone the repo
-git clone https://github.com/<your-username>/test-automation-framework.git
+git clone https://github.com/buchirano/test-automation-framework.git
 cd test-automation-framework
 
-# Run the full regression suite (headless)
-mvn test -Dsuite=regression
+# Compile and package
+mvn clean compile install -q
 
-# Run in headed mode (browser visible — useful for debugging)
-mvn test -Dsuite=regression -Dheadless=false
+# Run the full regression suite
+mvn exec:java -Dexec.mainClass='testScripts.execution.RegressionTestScript'
 
 # Run against a specific environment
-mvn test -DAPP_URL=https://staging.yourapp.com -Dsuite=smoke
+mvn exec:java -Dexec.mainClass='testScripts.execution.RegressionTestScript' \
+  -DAPP_URL=https://your-sandbox.salesforce.com \
+  -DTEST_ENV=staging
 
-# Run a specific test class
-mvn test -Dtest=LoginTest
+# Run in debug mode (headless=false, browser stays open)
+mvn exec:java -Dheadless=false -Dexec.mainClass='testScripts.execution.RegressionTestScript'
 ```
 
 ---
 
-## Jenkins Pipeline
+## Pipeline Overview
 
-The `jenkins/Jenkinsfile` defines a 5-stage declarative pipeline:
+The `jenkins/Jenkinsfile` defines an 8-stage declarative pipeline:
 
 ```
-Checkout → Build → Run Tests → Generate Report → Archive
+Start Confirmation → Clone → Install SF CLI → Build →
+SF Authentication → Extract Token → Execute Tests → Reporting
 ```
 
-**Pipeline triggers:**
-- **Scheduled:** Monday–Friday at 6:00 AM EST
-- **On-demand:** Via Slack Workflow (QA team triggers without Jenkins access)
+**Stage details:**
+1. **Start Confirmation** — immediately notifies Slack that the pipeline queued; prevents duplicate triggers
+2. **Install Salesforce CLI** — downloads SF CLI once and caches; skips download if already present
+3. **Build** — Maven clean compile install
+4. **Salesforce Authentication** — SFDX URL auth; no MFA; auth file written and immediately deleted
+5. **Extract Token** — parses SF CLI JSON output; injects access token and instance URL as Maven `-D` flags
+6. **Execute Tests** — Xvfb virtual display, XRay credentials injected, retry loop up to 3 attempts, VP counts parsed from XML results per attempt
+7. **Reporting** — archives all attempt artifacts, publishes HTML index linking all attempt reports, sets build status
 
-**Report:** An ExtentReports HTML report is published in Jenkins after every run, showing each test case with VP pass/fail status, screenshots on failure, and execution duration.
+**Triggers:**
+- Scheduled: Monday–Friday, 6:00 AM
+- On-demand: Slack Workflow shortcut (no Jenkins access required)
 
----
-
-## Slack Integration
-
-QA team members trigger pipelines and receive results entirely within Slack:
-
-1. Open the `#qa-automation` channel
-2. Use the **⚡ Run Tests** workflow shortcut
-3. Select suite → Submit
-4. Results post back automatically on completion
-
-See [`slack-integration/README.md`](slack-integration/README.md) for full setup instructions.
-
----
-
-## Configuration
-
-All settings are in `config/config.properties`. Runtime overrides use Maven `-D` flags:
-
-| Property              | Default         | Description                              |
-|-----------------------|-----------------|------------------------------------------|
-| `BROWSER`             | `CHROME`        | Browser to use (CHROME/FIREFOX/EDGE)     |
-| `HEADLESS`            | `true`          | Headless mode (false for local debug)    |
-| `APP_URL`             | *(required)*    | Base URL of the application under test   |
-| `TEST_ENV`            | `QA`            | Environment label shown in reports       |
-| `SEARCH_WAIT_SECONDS` | `15`            | Default element wait timeout             |
-| `CLOSE_ON_TERMINATE`  | `true`          | Close browser after test completion      |
+**Notifications:**
+- SUCCESS → external QA channel
+- UNSTABLE (VP failure) → both QA channel and internal automation channel with full VP details
+- FAILURE (build error) → both channels
 
 ---
 
-## Tech Stack
+## Contact
 
-| Tool               | Version | Purpose                              |
-|--------------------|---------|--------------------------------------|
-| Java               | 11      | Primary language                     |
-| Selenium WebDriver | 4.18    | Browser automation                   |
-| TestNG             | 7.9     | Test execution and reporting         |
-| Maven              | 3.8+    | Build and dependency management      |
-| Jenkins            | 2.4x+   | CI/CD pipeline orchestration         |
-| ExtentReports      | 5.1     | HTML test execution reports          |
-| Apache POI         | 5.2     | Excel data-driven test support       |
-| Slack API          | —       | Pipeline trigger + result notification|
-
----
-
-## License
-
-MIT License — feel free to use this as a reference for your own framework.
+**Buchi Uwakwe**
+- Email: buchiuwakwe@boltzintelligence.com
+- GitHub: [github.com/buchirano](https://github.com/buchirano)

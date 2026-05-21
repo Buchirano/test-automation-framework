@@ -12,10 +12,10 @@ import com.buchirano.automation.core.WebDriverSingleton;
  * for the Case Establishments list/search screen within CaMEO.
  *
  * <p>This class handles cemetery selection, first/subsequent interment type
- * selection, veteran details entry, and navigation to the next screen.</p>
+ * selection, applicant details entry, and navigation to the next screen.</p>
  *
  * <p><b>Screen:</b> Case Establishments</p>
- * <p><b>Layer:</b> Page Object (Application — CaMEO)</p>
+ * <p><b>Layer:</b> Page Object (Application — NexusCM)</p>
  */
 public class CaseEstablishmentsPage extends BasePageClass {
 

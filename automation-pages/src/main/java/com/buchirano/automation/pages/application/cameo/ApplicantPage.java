@@ -7,12 +7,12 @@ import com.buchirano.automation.core.AutomatedObject;
 import com.buchirano.automation.core.Search;
 
 /**
- * Page class for the Veteran Details screen within CaMEO Case Establishment.
+ * Page class for the Applicant Details screen within NexusCM Case Management.
  *
- * <p><b>Screen:</b> Case Establishment — Veteran Details</p>
- * <p><b>Layer:</b> Page Object (Application — CaMEO)</p>
+ * <p><b>Screen:</b> Case Establishment — Applicant Details</p>
+ * <p><b>Layer:</b> Page Object (Application — NexusCM)</p>
  */
-public class VeteranPage extends BasePageClass {
+public class ApplicantPage extends BasePageClass {
 
     public final String firstNameElementSelector = "//*[@data-id='vetFirstName']//input";
     public final String middleNameElementSelector = "//*[@data-id='vetMiddleName']//input";
@@ -45,16 +45,16 @@ public class VeteranPage extends BasePageClass {
     public final String alertText = "//*[text()='Complete this field.']";
     public final String valorCodePickListValues = "//ul[@data-id='dropdown']";
     public final String warningText = "//*[@data-id='ErrorMessageBanner']";
-    public final String veteranPreviousButton = "(//button[contains(.,'Previous')])[2]";
+    public final String applicantPreviousButton = "(//button[contains(.,'Previous')])[2]";
 
     public final String cityStateZipCodeCountryDropdownResultElementSelector(String expectedOptionText) {
         return "//li[@role='presentation']//*[@aria-checked='false']//*[contains(text(), '" + expectedOptionText + "')]";
     }
 
     private final ModalPageClass modal = new ModalPageClass();
-    private final VeteranSearchModal searchModal = new VeteranSearchModal();
+    private final ApplicantSearchModal searchModal = new ApplicantSearchModal();
 
-    public AutomatedObject getVeteranId() { return getAutomatedObjectFromName("ID"); }
+    public AutomatedObject getApplicantId() { return getAutomatedObjectFromName("ID"); }
     public AutomatedObject getFirstNameInput() { scrollIntoView(firstNameElementSelector); return getElementByXPath(firstNameElementSelector); }
     public AutomatedObject getMiddleNameInput() { scrollIntoView(middleNameElementSelector); return getElementByXPath(middleNameElementSelector); }
     public AutomatedObject getLastNameInput() { scrollIntoView(lastNameElementSelector); return getElementByXPath(lastNameElementSelector); }
@@ -86,8 +86,8 @@ public class VeteranPage extends BasePageClass {
     public AutomatedObject modifyContactPhoneNumber() { scrollIntoView(getInputXPathByDataId("vetPhoneModified")); return getInputByDataId("vetPhoneModified"); }
     public AutomatedObject modifyContactBirthdate() { scrollIntoView(getInputXPathByDataId("vetBirthDateModified")); return getInputByDataId("vetBirthDateModified"); }
     public AutomatedObject getCityStateZipCodeCountryDropdownSearchResult(String expectedOptionText) { scrollIntoView(cityStateZipCodeCountryDropdownResultElementSelector(expectedOptionText)); return getElementByXPath(cityStateZipCodeCountryDropdownResultElementSelector(expectedOptionText)); }
-    public AutomatedObject veteranSearchButton() { scrollIntoView(getButtonXPathByDataId("searchContactButton")); return getButtonByDataId("searchContactButton"); }
-    public AutomatedObject veteranClearContactButton() { scrollIntoView(getButtonXPathByDataId("clearForm")); return getButtonByDataId("clearForm"); }
+    public AutomatedObject applicantSearchButton() { scrollIntoView(getButtonXPathByDataId("searchContactButton")); return getButtonByDataId("searchContactButton"); }
+    public AutomatedObject applicantClearContactButton() { scrollIntoView(getButtonXPathByDataId("clearForm")); return getButtonByDataId("clearForm"); }
     public AutomatedObject usePreviousDecedentCheckbox() { scrollIntoView(getInputXPathByDataId("previousDecdentCheckbox")); return getInputByDataId("previousDecdentCheckbox"); }
 
     public List<AutomatedObject> getSuffixDropdownOptions() { return getElementsByXPath(suffixPicklistValues); }
@@ -122,7 +122,7 @@ public class VeteranPage extends BasePageClass {
         fillInputField(getClaimNumberInput(), claimNumber);
         if (maritalStatus != null && !maritalStatus.isEmpty()) selectDropdownOption(getMaritalStatusDropdown(), maritalStatus);
         fillInputField(getAutomatedObjectFromName("Maiden Name"), maidenName);
-        if (isDeceased != null && !isDeceased.isEmpty()) selectDropdownOption(getAutomatedObjectFromName("Is Veteran/Service Member Deceased?"), isDeceased);
+        if (isDeceased != null && !isDeceased.isEmpty()) selectDropdownOption(getAutomatedObjectFromName("Is Applicant Deceased?"), isDeceased);
         fillInputField(getAutomatedObjectFromName("Date of Death"), dateOfDeath);
         fillInputField(getAutomatedObjectFromName("Birthdate"), birthDate);
         fillInputField(getAutomatedObjectFromName("Birth_City"), birthCity);
@@ -131,7 +131,7 @@ public class VeteranPage extends BasePageClass {
         fillInputField(getAutomatedObjectFromName("Email"), email);
     }
 
-    public void enterVeteranAddress(String addressLineOne, String addressLineTwo, String zipCode) {
+    public void enterApplicantAddress(String addressLineOne, String addressLineTwo, String zipCode) {
         fillInputField(getAutomatedObjectFromName("Address Line One"), addressLineOne);
         fillInputField(getAutomatedObjectFromName("Address Line Two"), addressLineTwo);
         if (getZipCodeSearchField().getPropertyValue("value").isEmpty() && zipCode != null) {
@@ -163,20 +163,20 @@ public class VeteranPage extends BasePageClass {
         }
     }
 
-    public void enterAllVeteranDetails(String firstName, String middleName, String lastName,
+    public void enterAllApplicantDetails(String firstName, String middleName, String lastName,
             String suffix, String deceased, String militaryStatus) {
         String dateOfDeath = deceased.equalsIgnoreCase("yes") ? "May 5, 2025" : null;
         enterName(firstName, middleName, lastName, suffix);
         enterAliasName("Alias", "Automation", "Name", "THIRD");
         enterPersonalInformation(randomSSN(), "Married", "4444", "22", "Maiden", deceased, dateOfDeath, "Mar 1, 1960", "Sarasota", "Florida", "(888) 888-8888", "automation-test@email.com");
-        enterVeteranAddress("24 North", "8 South", "29588");
+        enterApplicantAddress("24 North", "8 South", "29588");
         enterMilitaryInformation(militaryStatus, "Yes", "FOREST HILL CEMETERY - 123", "333 SEED FORM", "Honorable", "Purple Heart");
     }
 
-    public void openSearchVeteranModal() { veteranSearchButton().click(); waitForSalesforceLoad(); }
+    public void openSearchApplicantModal() { applicantSearchButton().click(); waitForSalesforceLoad(); }
     public void clickModalSearchButton() { searchModal.getSearchButton().click(); }
 
-    public void enterVeteranSearchValues(String firstName, String middleName, String lastName,
+    public void enterApplicantSearchValues(String firstName, String middleName, String lastName,
             String ssn, String birthDate, String icn, String edipi, String gender, String phone,
             String mothersMaidenName, String birthCity, String birthState) {
         searchModal.firstNameField().sendKeys(firstName);
@@ -193,7 +193,7 @@ public class VeteranPage extends BasePageClass {
         if (!birthState.equals("--None--")) selectDropdownOption(searchModal.birthStateField(), birthState);
     }
 
-    public void clearVeteranSearchFields() {
+    public void clearApplicantSearchFields() {
         getFirstNameInput().clear(); getMiddleNameInput().clear(); getLastNameInput().clear(); getSSNInput().clear();
         searchModal.birthdateField().clear(); selectDropdownOption(searchModal.genderField(), "--None--");
         searchModal.phoneField().clear(); searchModal.mothersMaidenNameField().clear();
@@ -207,19 +207,19 @@ public class VeteranPage extends BasePageClass {
         modifyContactFirstName().sendKeys(firstName); modifyContactMiddleName().sendKeys(middleName); modifyContactLastName().sendKeys(lastName);
     }
 
-    public void openVeteranSearchModalAndSelect(String firstName, String middleName, String lastName,
+    public void openApplicantSearchModalAndSelect(String firstName, String middleName, String lastName,
             String ssn, String birthDate, String icn, String edipi, String gender, String phone,
             String mothersMaidenName, String birthCity, String birthState) {
-        openSearchVeteranModal();
-        enterVeteranSearchValues(firstName, middleName, lastName, ssn, birthDate, icn, edipi, gender, phone, mothersMaidenName, birthCity, birthState);
+        openSearchApplicantModal();
+        enterApplicantSearchValues(firstName, middleName, lastName, ssn, birthDate, icn, edipi, gender, phone, mothersMaidenName, birthCity, birthState);
         clickModalSearchButton();
         safeSleep(2500);
         modal.selectFirstEnabledResult();
     }
 
-    public void clearContactButton() { veteranClearContactButton().click(); waitForSalesforceLoad(); }
-    public void clearVeteranNameFields() { getFirstNameInput().clear(); getMiddleNameInput().clear(); getLastNameInput().clear(); }
-    public void clearVeteranAliasNameFields() { getAliasFirstNameInput().clear(); getAliasMiddleNameInput().clear(); getAliasLastNameInput().clear(); }
+    public void clearContactButton() { applicantClearContactButton().click(); waitForSalesforceLoad(); }
+    public void clearApplicantNameFields() { getFirstNameInput().clear(); getMiddleNameInput().clear(); getLastNameInput().clear(); }
+    public void clearApplicantAliasNameFields() { getAliasFirstNameInput().clear(); getAliasMiddleNameInput().clear(); getAliasLastNameInput().clear(); }
 
     public void clickValorPickList() {
         getValorSearch().click();
@@ -228,14 +228,14 @@ public class VeteranPage extends BasePageClass {
 
     public void inputValorCodeField(String value) { getValorSearch().sendKeys(value); }
     public void clearValorCodeField() { getValorSearch().clear(); }
-    public void clickUsePreviousDecedentVeteran() { usePreviousDecedentCheckbox().click(); }
+    public void clickUsePreviousDecedentApplicant() { usePreviousDecedentCheckbox().click(); }
     public void clickModifyContactCheckbox() { modifyContactCheckbox().click(); modifyContactCheckbox().click(); }
 
     public List<AutomatedObject> listOfAllFields() {
         return List.of(getFirstNameInput(), getMiddleNameInput(), getLastNameInput(), getSuffixDropdown(),
                 getAliasFirstNameInput(), getAliasMiddleNameInput(), getAliasLastNameInput(), getAliasSuffixInput(),
                 getSSNInput(), getServiceNumberInput(), getClaimNumberInput(), getMaritalStatusDropdown(),
-                getAutomatedObjectFromName("Maiden Name"), getAutomatedObjectFromName("Is Veteran/Service Member Deceased?"),
+                getAutomatedObjectFromName("Maiden Name"), getAutomatedObjectFromName("Is Applicant Deceased?"),
                 getAutomatedObjectFromName("Birthdate"), getAutomatedObjectFromName("Birth_City"),
                 getAutomatedObjectFromName("Birth_State"), getAutomatedObjectFromName("Phone"),
                 getAutomatedObjectFromName("Email"), getAutomatedObjectFromName("Address Line One"),

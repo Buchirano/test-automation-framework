@@ -19,13 +19,13 @@ import com.buchirano.automation.core.AutomatedObject;
 
 /**
  * Page class encapsulating tab-level navigation and workflow traversal methods
- * for the CaMEO Case Establishment application.
+ * for the NexusCM Case Management application.
  *
  * <p>This class provides click handlers for all top-level tabs, all 10 Case
  * Establishment chevrons, Next/Previous button navigation, and convenience
  * methods to navigate directly to any screen by pre-populating all preceding screens.</p>
  *
- * <p><b>Application:</b> CaMEO</p>
+ * <p><b>Application:</b> NexusCM</p>
  * <p><b>Layer:</b> Page Object (Application — Navigation)</p>
  */
 public class CaMEOGeneralNavigationPage extends BasePageClass {
@@ -33,7 +33,7 @@ public class CaMEOGeneralNavigationPage extends BasePageClass {
     // ========================== Dependent Page Objects ==========================
 
     private final StartPage startScreen = new StartPage();
-    private final VeteranPage veteranScreen = new VeteranPage();
+    private final ApplicantPage veteranScreen = new ApplicantPage();
     private final MilitaryPage military = new MilitaryPage();
     private final ClaimantPage claimant = new ClaimantPage();
     private final PersonalRepresentativePage personalRep = new PersonalRepresentativePage();
@@ -435,7 +435,7 @@ public class CaMEOGeneralNavigationPage extends BasePageClass {
     /** Navigates to the Summary screen and performs a case transfer. */
     public void goToSummaryScreenAndTransferCase() {
         goToSummaryScreen();
-        summary.performCaseTransferOperations("BOSS NCSO");
+        summary.performCaseTransferOperations("CorePlatform Transfer");
         waitForSalesforceLoad();
     }
 
@@ -447,7 +447,7 @@ public class CaMEOGeneralNavigationPage extends BasePageClass {
      * @param intermentType "First" or "Subsequent"
      */
     public void populateStartScreen(String intermentType) {
-        startScreen.selectCemetery("FT. CUSTER NATIONAL CEMETERY - 909");
+        startScreen.selectCemetery("Westfield Business District - 909");
         startScreen.selectIntermentType(intermentType);
         waitForSalesforceLoad();
     }

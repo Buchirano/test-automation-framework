@@ -15,10 +15,10 @@ import com.buchirano.automation.core.AutomatedObject;
 import com.buchirano.automation.core.Search;
 
 /**
- * Page class for the Start screen of CaMEO Case Establishment.
+ * Page class for the Start screen of NexusCM Case Management.
  *
  * <p><b>Screen:</b> Case Establishment — Start</p>
- * <p><b>Layer:</b> Page Object (Application — CaMEO)</p>
+ * <p><b>Layer:</b> Page Object (Application — NexusCM)</p>
  */
 public class StartPage extends BasePageClass {
 
@@ -34,14 +34,14 @@ public class StartPage extends BasePageClass {
     public String origin = "//button[@name='MBMS_Origin__c']";
     public String receivedDate = "//*[@data-id='receivedDate']//input";
     public String originatingCmpPacketID = "//*[@data-id='originatingCMPPacketIdShow']//input";
-    public String vaTrackingNumber = "//*[@data-id='vagovTrackingNumberShow']//input";
+    public String appTrackingNumber = "//*[@data-id='vagovTrackingNumberShow']//input";
     public String isApplicationSignedCheckbox = "//input[@name='MBMS_Is_Application_Signed__c']";
     public String veteranID = "//*[@data-id='cemeteryPageModalVeteranId']//input";
     public String searchModalButton = "//*[@title='Search']";
 
     private final DecedentSearchModalPage decedentSearch = new DecedentSearchModalPage();
     private final ModalPageClass modal = new ModalPageClass();
-    private final String salesforceBossIcon = "SALESFORCE & BOSS";
+    private final String salesforceBossIcon = "SALESFORCE & CORE";
 
     private String cemeteryOption(String cemeteryName) { return "//lightning-base-combobox-formatted-text[@title = '" + cemeteryName + "']"; }
 
@@ -59,7 +59,7 @@ public class StartPage extends BasePageClass {
     public AutomatedObject getOrigin() { return getElementByXPath(origin); }
     public AutomatedObject getReceivedDate() { return getElementByXPath(receivedDate); }
     public AutomatedObject getOriginatingCmpPacketID() { return getElementByXPath(originatingCmpPacketID); }
-    public AutomatedObject getVaTrackingNumber() { return getElementByXPath(vaTrackingNumber); }
+    public AutomatedObject getAppTrackingNumber() { return getElementByXPath(appTrackingNumber); }
     public AutomatedObject getIsApplicationSignedCheckbox() { return getElementByXPath(isApplicationSignedCheckbox); }
     public AutomatedObject getVeteranID() { return getElementByXPath(veteranID); }
     public AutomatedObject getSearchModalButton() { scrollIntoView("//*[@title='Search']"); return getElementBy("title", "Search"); }
@@ -103,7 +103,7 @@ public class StartPage extends BasePageClass {
     public void inputReceivedDate(String date) { waitForSalesforceLoad(); getReceivedDate().clear(); getReceivedDate().sendKeys(date); waitForSalesforceLoad(); }
     public String getYesterdaysDate() { return LocalDate.now().minusDays(1).format(DateTimeFormatter.ofPattern("MMM dd, yyyy")); }
     public void inputOriginatingPacketID(String id) { waitForSalesforceLoad(); getOriginatingCmpPacketID().clear(); getOriginatingCmpPacketID().sendKeys(id); waitForSalesforceLoad(); }
-    public void inputTrackingNumber(String trackingNumber) { waitForSalesforceLoad(); getVaTrackingNumber().clear(); getVaTrackingNumber().sendKeys(trackingNumber); waitForSalesforceLoad(); }
+    public void inputTrackingNumber(String trackingNumber) { waitForSalesforceLoad(); getAppTrackingNumber().clear(); getAppTrackingNumber().sendKeys(trackingNumber); waitForSalesforceLoad(); }
     public void clickIsApplicationSigned() { waitForSalesforceLoad(); getIsApplicationSignedCheckbox().click(); waitForSalesforceLoad(); }
     public void openDecedentSearchModal() { getSearchPreviousDecedentButton().click(); waitForSalesforceLoad(); }
     public void clickModalSearchButton() { decedentSearch.getSearchButton().click(); waitForSalesforceLoad(); }
@@ -162,12 +162,12 @@ public class StartPage extends BasePageClass {
 
     public List<AutomatedObject> listOfCreateNewCaseFields() {
         return List.of(getCaseTypeField(), getReceivedBy(), getOrigin(), getReceivedDate(),
-                getOriginatingCmpPacketID(), getVaTrackingNumber(), getCemeteryDropdownElementSelector(),
+                getOriginatingCmpPacketID(), getAppTrackingNumber(), getCemeteryDropdownElementSelector(),
                 getDesiredCemeteryDropdown(), getCemeteryFirstSubsequentElementSelector());
     }
 
     public List<AutomatedObject> listOfPreNeedEnabledFields() {
         return List.of(getCaseTypeField(), getOrigin(), getReceivedDate(),
-                getOriginatingCmpPacketID(), getVaTrackingNumber(), getDesiredCemeteryDropdown());
+                getOriginatingCmpPacketID(), getAppTrackingNumber(), getDesiredCemeteryDropdown());
     }
 }

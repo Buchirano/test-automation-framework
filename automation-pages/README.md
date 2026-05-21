@@ -1,52 +1,77 @@
 # automation-pages
 
-[![Java](https://img.shields.io/badge/Java-11%2B-orange?style=flat-square&logo=java)](https://www.java.com)
-[![Selenium](https://img.shields.io/badge/Selenium-4.x-green?style=flat-square&logo=selenium)](https://www.selenium.dev)
-[![TestNG](https://img.shields.io/badge/TestNG-7.x-blue?style=flat-square)](https://testng.org)
-[![Pattern](https://img.shields.io/badge/Pattern-Page%20Object%20Model-purple?style=flat-square)]()
-[![License](https://img.shields.io/badge/License-MIT-lightgrey?style=flat-square)](LICENSE)
+**A production-grade Page Object Model library for enterprise Salesforce Lightning application test automation — designed and built from scratch.**
 
-A production-grade **Page Object Model (POM)** library for end-to-end UI test automation of enterprise Salesforce Lightning applications. This repository serves as the page layer in a three-tier automation architecture, providing clean, reusable, and maintainable abstractions over complex Salesforce DOM structures.
+![Java](https://img.shields.io/badge/Java-11%2B-ED8B00?logo=java&logoColor=white)
+![Selenium](https://img.shields.io/badge/Selenium-4.x-43B02A?logo=selenium&logoColor=white)
+![TestNG](https://img.shields.io/badge/TestNG-7.x-FF6C37)
+![Jenkins](https://img.shields.io/badge/Jenkins-CI%2FCD-D24939?logo=jenkins&logoColor=white)
+![GitHub Actions](https://img.shields.io/badge/GitHub-Actions-2088FF?logo=github-actions&logoColor=white)
+
+---
+
+## Overview
+
+This library is the Page Object Model layer in a 3-tier enterprise test automation architecture. It provides clean, reusable, and maintainable abstractions over complex Salesforce Lightning DOM structures for two application modules: **NexusCM** (case management) and **PortalRM** (resource management). Over 20 page classes, 9 portal page classes, and 28+ enum classes — all built to handle the specific rendering and interaction patterns of Salesforce Lightning at scale.
 
 ---
 
 ## Architecture
 
-This library sits at **Tier 2** of a three-tier automation stack:
-
 ```
-┌──────────────────────────────────────────────────────────┐
-│                    TIER 1 — CORE                         │
-│      BasePageClass · WebDriver · Wait Strategies         │
-│      Search API · AutomatedObject · Action Utilities     │
-└─────────────────────┬────────────────────────────────────┘
-                      │ extends
-┌─────────────────────▼────────────────────────────────────┐
-│              TIER 2 — PAGE LAYER  ◄── THIS REPO          │
-│                                                          │
-│  pages/application/cameo/     enums/                     │
-│  ├── StartPage                ├── AuthorityForBurial     │
-│  ├── VeteranPage              ├── BranchOfService        │
-│  ├── MilitaryPage             ├── RemainsType            │
-│  ├── ClaimantPage             ├── VerificationElement    │
-│  └── 16 more...              └── 24 more...             │
-│                                                          │
-│  pages/application/cerrt/                                │
-│  ├── SchedulePage                                        │
-│  ├── AvailabilityPage                                    │
-│  └── 7 more...                                          │
-└─────────────────────┬────────────────────────────────────┘
-                      │ consumed by
-┌─────────────────────▼────────────────────────────────────┐
-│                TIER 3 — TEST SCRIPTS                     │
-│      TestNG Tests · Data Providers · Jenkins Pipeline    │
-└──────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────┐
+│                    TIER 1 — CORE                                 │
+│      BasePageClass · WebDriver · Wait Strategies                 │
+│      Search API · AutomatedObject · Action Utilities             │
+└──────────────────────────┬───────────────────────────────────────┘
+                           │ extends
+┌──────────────────────────▼───────────────────────────────────────┐
+│              TIER 2 — PAGE LAYER  ◄── THIS REPO                  │
+│                                                                  │
+│  pages/application/cameo/        enums/                          │
+│  ├── StartPage                   ├── AuthorityForBurial          │
+│  ├── ApplicantPage               ├── BranchOfService             │
+│  ├── MilitaryPage                ├── RemainsType                 │
+│  ├── ClaimantPage                ├── VerificationElement         │
+│  └── 16 more...                 └── 24 more...                  │
+│                                                                  │
+│  pages/application/cerrt/                                        │
+│  ├── SchedulePage                                                │
+│  ├── AvailabilityPage                                            │
+│  └── 7 more...                                                   │
+└──────────────────────────┬───────────────────────────────────────┘
+                           │ consumed by
+┌──────────────────────────▼───────────────────────────────────────┐
+│                TIER 3 — TEST SCRIPTS                             │
+│      TestNG Tests · DataProvider · Jenkins Pipeline              │
+└──────────────────────────────────────────────────────────────────┘
 ```
 
-**Layer responsibilities:**
-- **Page classes** own all UI interactions — XPaths, element accessors, and Salesforce-specific interaction patterns
-- **Enums** own all valid field values — no magic strings scattered across test scripts
-- **Test scripts** (separate repo) own assertions and test flow
+---
+
+## Features
+
+- **20+ NexusCM page classes** covering the full 10-step case management workflow
+- **9 PortalRM page classes** covering scheduling, availability, regulations, and user management
+- **28+ enum classes** — all valid dropdown values and picklist entries are strongly typed; no magic strings
+- **Enum-driven field interactions** — all setter methods accept typed enums for IDE autocomplete and compile-time safety
+- **Null-safe conditionals** — every interaction method guards against null or blank inputs, enabling clean data-driven testing
+- **Salesforce Lightning compatibility patterns** — `jsClick`, `scrollIntoView`, `waitForSalesforceLoad`, `data-id` attribute targeting
+- **Dynamic row management** — handles indefinite runtime rows (military service entries, additional contacts)
+- **Date computation utilities** — `java.time`-based helpers for relative date navigation; no `Thread.sleep`, no hardcoded dates
+- **XPath-based verification** — `VerificationElement` enum stores all page-load verification XPaths for expressive wait calls
+
+---
+
+## Tech Stack
+
+| Technology | Version | Role |
+|---|---|---|
+| Java | 11+ | Primary language |
+| Selenium WebDriver | 4.x | Browser automation |
+| TestNG | 7.x | Test framework (consumed by scripts layer) |
+| Maven | 3.x | Build and dependency management |
+| Salesforce Lightning | — | Target application platform |
 
 ---
 
@@ -57,47 +82,62 @@ automation-pages/
 └── src/main/java/com/buchirano/automation/
     ├── pages/
     │   ├── general/
-    │   │   ├── BasePageClass.java
-    │   │   ├── CaseDetailsPage.java
-    │   │   └── LoginPage.java
+    │   │   ├── BasePageClass.java              # Abstract WebDriver wrapper
+    │   │   ├── CaseDetailsPage.java            # Case Details dashboard page
+    │   │   └── LoginPage.java                  # Multi-environment login page
     │   └── application/
-    │       ├── cameo/                    (20 page classes)
+    │       ├── cameo/                           # NexusCM — 20 page classes
     │       │   ├── StartPage.java
-    │       │   ├── VeteranPage.java
+    │       │   ├── ApplicantPage.java
+    │       │   ├── ApplicantSearchModal.java
     │       │   ├── MilitaryPage.java
     │       │   ├── ClaimantPage.java
     │       │   ├── OrganizationsPage.java
+    │       │   ├── OrganizationsSearchModal.java
     │       │   ├── PersonalRepresentativePage.java
     │       │   ├── AdditionalContactsPage.java
     │       │   ├── IntermentPage.java
     │       │   ├── SchedulingPage.java
     │       │   ├── SummaryPage.java
-    │       │   └── 10 supporting classes...
-    │       └── cerrt/                    (9 page classes)
+    │       │   ├── CaMEOGeneralNavigationPage.java
+    │       │   ├── CaseEstablishmentHeaderPage.java
+    │       │   ├── CaseEstablishmentsPage.java
+    │       │   ├── ReportsTabPage.java
+    │       │   ├── DecedentSearchModalPage.java
+    │       │   ├── ModalPageClass.java
+    │       │   ├── CemeteryRegulationsPage.java
+    │       │   └── SpecialGuidancePage.java
+    │       └── cerrt/                           # PortalRM — 9 page classes
+    │           ├── HomePage.java
+    │           ├── CemeteryDetailsPage.java
     │           ├── SchedulePage.java
     │           ├── AvailabilityPage.java
     │           ├── CemeteryRegulationsPage.java
     │           ├── UsersPage.java
-    │           └── 5 supporting classes...
-    └── enums/                            (28 enum classes)
+    │           ├── ActivityPage.java
+    │           ├── ModalClass.java
+    │           └── CeRRTGeneralNavigationPage.java
+    └── enums/                                   # 28+ enum classes
         ├── RemainsType.java
         ├── ServiceActivityType.java
         ├── VerificationElement.java
-        └── 25 more...
+        ├── BranchOfService.java
+        ├── AuthorityForBurial.java
+        └── 23 more...
 ```
 
 ---
 
 ## Application Coverage
 
-### CaMEO — Case Management and Eligibility Operations
+### NexusCM — Case Management Module
 
-Full automation coverage of the **10-step Case Establishment workflow**:
+Full automation coverage of the **10-step Case Management workflow**:
 
 | Step | Screen | Page Class |
-|------|--------|------------|
+|---|---|---|
 | 1 | Start | `StartPage` |
-| 2 | Veteran Details | `VeteranPage` |
+| 2 | Applicant Details | `ApplicantPage` |
 | 3 | Military Service | `MilitaryPage` |
 | 4 | Claimant Details | `ClaimantPage` |
 | 5 | Organizations | `OrganizationsPage` |
@@ -107,69 +147,67 @@ Full automation coverage of the **10-step Case Establishment workflow**:
 | 9 | Scheduling | `SchedulingPage` |
 | 10 | Summary | `SummaryPage` |
 
-**Supporting classes:** `CaMEOGeneralNavigationPage`, `CaseEstablishmentHeaderPage`, `ReportsTabPage`, `DecedentSearchModalPage`, `ModalPageClass`, `VeteranSearchModal`, `OrganizationsSearchModal`, `CemeteryRegulationsPage`, `SpecialGuidancePage`, `CaseEstablishmentsPage`
-
-### CeRRT — Cemetery Regulations and Reservation Tool
-
-Full automation coverage of all CeRRT cemetery management screens:
+### PortalRM — Resource Management Module
 
 | Screen | Page Class |
-|--------|------------|
+|---|---|
 | Home | `HomePage` |
-| Cemetery Details | `CemeteryDetailsPage` |
+| Location Details | `CemeteryDetailsPage` |
 | Schedule | `SchedulePage` |
 | Availability | `AvailabilityPage` |
-| Cemetery Regulations | `CemeteryRegulationsPage` |
-| MBMS Users | `UsersPage` |
+| Regulations | `CemeteryRegulationsPage` |
+| Users | `UsersPage` |
 | Activity | `ActivityPage` |
 | Shared Modal | `ModalClass` |
 | Navigation | `CeRRTGeneralNavigationPage` |
 
 ---
 
-## Design Principles
+## Design Patterns
 
 ### Enum-Driven Field Interactions
 
-All dropdown selections and picklist values are backed by strongly-typed enums, eliminating magic strings and providing IDE autocomplete:
+All dropdown selections are backed by strongly-typed enums:
 
 ```java
-// Without enums — brittle, error-prone
-interment.selectRemainsType("Casket");
-
-// With enums — type-safe, self-documenting
+// Type-safe, self-documenting, IDE autocomplete
 interment.selectRemainsType(RemainsType.CASKET);
 interment.selectAuthorityForBurial(AuthorityForBurial.DISCHARGE_DOCUMENT);
 interment.selectServiceActivityType(ServiceActivityType.DIRECT_INTERMENT);
+interment.selectEmblem(Emblem.BUDDHIST);
 ```
 
-### Null-Safe Conditional Interactions
+### Null-Safe Conditionals
 
-All setter methods guard against null inputs, enabling clean data-driven test scenarios where optional fields may be absent:
+Optional fields are skipped gracefully when data is absent:
 
 ```java
-public void selectRemainsType(String remains) {
-    if (remains == null) return;
-    scrollIntoView(remainsType);
-    wait.until(ExpectedConditions.elementToBeClickable(By.xpath(remainsType)));
-    selectDropdownOptionJSClick(getRemainsTypeDropdown(), remains);
-    waitForSalesforceLoad();
-}
+if (militaryStatus != null) selectDropdownOption(getMilitaryStatusDropdown(), militaryStatus);
+if (suffix != null && !suffix.isBlank()) selectDropdownGeneralOption(getSuffixDropdown(), suffix);
 ```
 
 ### Salesforce Lightning Compatibility
 
-Salesforce Lightning introduces specific automation challenges. This library addresses them consistently:
+Every interaction accounts for Lightning rendering specifics:
 
-- `jsClick()` for elements present in the DOM but not natively clickable due to Lightning rendering
-- `scrollIntoView()` before every interaction to handle off-screen Lightning components
-- `waitForSalesforceLoad()` after every state-changing action
-- `data-id` attribute targeting over dynamic Salesforce-generated element IDs
-- `ExpectedConditions` fluent waits for asynchronous Lightning component rendering
+```java
+// JS click for elements present but not natively clickable
+jsClick(getChevron("Summary"));
 
-### XPath-Based Verification
+// Scroll before interaction for off-screen Lightning components
+scrollIntoView(firstNameElementSelector);
+getElementByXPath(firstNameElementSelector);
 
-The `VerificationElement` enum stores XPath expressions for common page-load verification points, enabling expressive wait calls without raw strings in test scripts:
+// Wait for Lightning async rendering after every state change
+waitForSalesforceLoad();
+
+// data-id targeting over dynamic Salesforce-generated IDs
+public final String firstNameElementSelector = "//*[@data-id='vetFirstName']//input";
+```
+
+### XPath Verification
+
+`VerificationElement` enum enables expressive page-load assertions:
 
 ```java
 waitForVisibility(VerificationElement.MILITARY_CHEVRON);
@@ -180,87 +218,15 @@ waitForVisibility(VerificationElement.ORGANIZATIONS_CHEVRON);
 
 ## Notable Engineering Highlights
 
-**Dynamic row management** — `MilitaryPage` handles an indefinite number of military service rows added at runtime, using list-based element retrieval with 0-based indexing and row-aware XPath construction.
-
-**Iframe-aware reporting** — `ReportsTabPage` uses direct `WebElement` for elements inside the Salesforce Report Viewer iframe where standard Selenium focus alignment is insufficient.
-
-**Email validation** — `OrganizationsPage` includes a static RFC-compliant email validator used to programmatically identify valid contacts in search results without relying on UI state.
-
-**Character limit testing** — `CemeteryRegulationsPage` programmatically generates random strings of controlled length to validate Salesforce rich text field character limits and error recovery behavior.
-
-**Date computation utilities** — `SchedulePage` provides a full suite of `java.time`-based date helpers — no `Thread.sleep`, no hardcoded dates. Tests navigate dynamically to the first Monday of next month, the next occurrence of any weekday, or any relative past/future date.
+- **Dynamic row management** — `MilitaryPage` and `AdditionalContactsPage` handle an indefinite number of rows added at runtime via list-based element retrieval and row-aware XPath construction
+- **Iframe-aware reporting** — `ReportsTabPage` uses direct `WebElement` for elements inside the Salesforce Report Viewer iframe
+- **Email validation** — `OrganizationsPage` includes an RFC-compliant static email validator for identifying valid contacts in search results
+- **Character limit testing** — `CemeteryRegulationsPage` generates random strings of controlled length to validate Salesforce rich text field character limits
+- **Date computation** — `SchedulePage` provides `java.time`-based date helpers for relative past/future navigation with no hardcoded dates
 
 ---
 
-## Usage Examples
-
-**Completing the Interment Details screen:**
-
-```java
-IntermentPage interment = new IntermentPage();
-
-interment.selectRemainsType(RemainsType.NO_REMAINS.getText());
-interment.selectAuthorityForBurial(AuthorityForBurial.DISCHARGE_DOCUMENT);
-interment.selectServiceActivityType(ServiceActivityType.DIRECT_INTERMENT);
-interment.selectSexualOffenseConvicted(GeneralResponse.NO);
-interment.selectCapitalCrimeConvicted(GeneralResponse.NO);
-interment.selectFamilyRequestService(GeneralResponse.NO.getText());
-interment.selectFamilyToWitnessInterment(GeneralResponse.NO.getText());
-interment.selectEmblem(Emblem.BUDDHIST.getText());
-```
-
-**Creating an availability record in CeRRT:**
-
-```java
-AvailabilityPage availability = new AvailabilityPage();
-
-availability.createNewAvailability(
-    "Morning Interment Block",
-    Impact.CAPACITY,
-    ServiceInterval.THIRTY,
-    "7:30 AM",
-    "11:30 AM",
-    RemainsType.CASKET,
-    ServiceActivityType.INTERMENT_FIRST_CASKET,
-    "Ossuary",
-    Honors.HONORS
-);
-```
-
-**Navigating chevrons and verifying screen state:**
-
-```java
-CaMEOGeneralNavigationPage navigate = new CaMEOGeneralNavigationPage();
-
-navigate.clickMilitaryChevron();
-navigate.waitForVisibility(VerificationElement.MILITARY_CHEVRON);
-assertTrue(navigate.verifyCurrentChevron("Military"));
-```
-
----
-
-## Technology Stack
-
-| Technology | Version | Role |
-|------------|---------|------|
-| Java | 11+ | Primary language |
-| Selenium WebDriver | 4.x | Browser automation |
-| TestNG | 7.x | Test framework (consumed by test-scripts layer) |
-| Maven | 3.x | Build and dependency management |
-| Salesforce Lightning | — | Target application platform |
-
----
-
-## Related Repositories
-
-| Repository | Description |
-|------------|-------------|
-| [`test-automation-framework`](https://github.com/buchirano/test-automation-framework) | Jenkins CI/CD pipeline, Salesforce CLI auth, Slack integration, HTML reporting |
-| [`automation-scripts`](https://github.com/buchirano/automation-scripts) | Modular and execution test scripts for CeRRT and CaMEO |
-
----
-
-## Getting Started
+## How to Run
 
 ```bash
 git clone https://github.com/buchirano/automation-pages.git
@@ -268,7 +234,7 @@ cd automation-pages
 mvn clean install -DskipTests
 ```
 
-Add as a Maven dependency in your test project:
+Add as a Maven dependency:
 
 ```xml
 <dependency>
@@ -280,7 +246,17 @@ Add as a Maven dependency in your test project:
 
 ---
 
-## Author
+## Related Repositories
 
-**Chimbuchi Uwakwe** — QA Automation Engineer · DevOps Practitioner  
-[github.com/buchirano](https://github.com/buchirano) · Harrisburg, PA
+| Repository | Description |
+|---|---|
+| [`test-automation-framework`](https://github.com/buchirano/test-automation-framework) | Jenkins CI/CD pipeline, Salesforce CLI auth, Slack integration |
+| [`automation-scripts`](https://github.com/buchirano/automation-scripts) | Modular and execution test scripts for NexusCM and PortalRM |
+
+---
+
+## Contact
+
+**Buchi Uwakwe**
+- Email: buchiuwakwe@boltzintelligence.com
+- GitHub: [github.com/buchirano](https://github.com/buchirano)

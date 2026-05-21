@@ -9,10 +9,10 @@ import com.buchirano.automation.core.AutomatedObject;
 import com.buchirano.automation.core.Search;
 
 /**
- * Page class for the Summary Details screen within CaMEO Case Establishment.
+ * Page class for the Summary Details screen within NexusCM Case Management.
  *
  * <p><b>Screen:</b> Case Establishment — Summary Details</p>
- * <p><b>Layer:</b> Page Object (Application — CaMEO)</p>
+ * <p><b>Layer:</b> Page Object (Application — NexusCM)</p>
  */
 public class SummaryPage extends BasePageClass {
 
@@ -48,7 +48,7 @@ public class SummaryPage extends BasePageClass {
     }
 
     public String transferButtonClick() {
-        if (getTransferToDropdown().readText().equals("--None--")) selectDropdownOption(getTransferToDropdown(), "BOSS NCSO");
+        if (getTransferToDropdown().readText().equals("--None--")) selectDropdownOption(getTransferToDropdown(), "CorePlatform Transfer");
         getTransferButton().click();
         wait.until(ExpectedConditions.elementToBeClickable(getWebElementByXPath(transferCaseConfirmationYesButton))).click();
         return "Transfer button clicked";
