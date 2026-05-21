@@ -4,10 +4,10 @@ import com.buchirano.automation.pages.general.BasePageClass;
 import com.buchirano.automation.core.AutomatedObject;
 
 /**
- * Page class for the Special Guidance modal within CaMEO Case Establishment.
+ * Page class for the Special Guidance modal within NexusCM Case Management.
  *
  * <p><b>Modal:</b> Special Guidance</p>
- * <p><b>Layer:</b> Page Object (Application — CaMEO)</p>
+ * <p><b>Layer:</b> Page Object (Application — NexusCM)</p>
  */
 public class SpecialGuidancePage extends BasePageClass {
 

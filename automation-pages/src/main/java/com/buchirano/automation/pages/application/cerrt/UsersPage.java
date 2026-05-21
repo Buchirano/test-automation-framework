@@ -12,10 +12,10 @@ import com.buchirano.automation.core.Search;
 
 /**
  * Page class encapsulating all mapped element paths and interaction methods
- * for the MBMS Users screen within the CeRRT application.
+ * for the System Users screen within the PortalRM application.
  *
- * <p><b>Application:</b> CeRRT (Cemetery Scheduling and Regulations Tool)</p>
- * <p><b>Screen:</b> MBMS Users</p>
+ * <p><b>Application:</b> PortalRM Resource Management</p>
+ * <p><b>Screen:</b> System Users</p>
  * <p><b>Layer:</b> Page Object (Application)</p>
  */
 public class UsersPage extends BasePageClass {

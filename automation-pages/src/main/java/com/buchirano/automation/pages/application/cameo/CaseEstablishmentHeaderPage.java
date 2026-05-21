@@ -11,7 +11,7 @@ import com.buchirano.automation.pages.general.BasePageClass;
  * Case Establishment header section, which persists across all chevron screens.
  *
  * <p><b>Screen:</b> Case Establishment Header (all screens)</p>
- * <p><b>Layer:</b> Page Object (Application — CaMEO)</p>
+ * <p><b>Layer:</b> Page Object (Application — NexusCM)</p>
  */
 public class CaseEstablishmentHeaderPage extends BasePageClass {
 

@@ -91,9 +91,9 @@ public class CaMEOGeneralNavigationPage extends BasePageClass {
     }
 
     /**
-     * Returns the MBMS Case Details tab element.
+     * Returns the Case Details tab element.
      *
-     * @return {@link AutomatedObject} for the MBMS Case Details tab
+     * @return {@link AutomatedObject} for the Case Details tab
      */
     public AutomatedObject getCaseDetailsTab() {
         String path = "//a[@title='MBMS Case Details']/parent::*";
@@ -151,11 +151,11 @@ public class CaMEOGeneralNavigationPage extends BasePageClass {
         waitForVisibility(VerificationElement.RECENT_REPORTS);
     }
 
-    /** Clicks the MBMS Case Details tab and waits for the page to stabilize. */
+    /** Clicks the Case Details tab and waits for the page to stabilize. */
     public void clickCaseDetailsTab() {
         getCaseDetailsTab().click();
         waitForSalesforceLoad();
-        waitForVisibility(VerificationElement.MBMS_CASE_DETAILS_TAB);
+        waitForVisibility(VerificationElement.CASE_DETAILS_TAB);
     }
 
     /** Clicks the Case Establishment tab and waits for the Start chevron. */
@@ -256,15 +256,15 @@ public class CaMEOGeneralNavigationPage extends BasePageClass {
         waitForVisibility(VerificationElement.START_CHEVRON);
     }
 
-    /** Clicks the Veteran chevron and waits for the Veteran screen to load. */
+    /** Clicks the Applicant chevron and waits for the Applicant screen to load. */
     public void clickVeteranChevron() {
         scrollIntoView("//li[@title='Veteran']");
         jsClick(getChevron("Veteran"));
-        if (!isPresent(VerificationElement.VETERAN_CHEVRON.getXpathValue())) {
+        if (!isPresent(VerificationElement.APPLICANT_CHEVRON.getXpathValue())) {
             jsClick(getChevron("Veteran"));
             waitForSalesforceLoad();
         }
-        waitForVisibility(VerificationElement.VETERAN_CHEVRON);
+        waitForVisibility(VerificationElement.APPLICANT_CHEVRON);
     }
 
     /** Clicks the Military chevron and waits for the Military screen to load. */
@@ -360,7 +360,7 @@ public class CaMEOGeneralNavigationPage extends BasePageClass {
 
     // ========================== Screen Navigation Shortcuts ==========================
 
-    /** Navigates to the Veteran screen by completing the Start screen. */
+    /** Navigates to the Applicant screen by completing the Start screen. */
     public void goToVeteranScreen() {
         startScreen.clickCreateNewCaseButton();
         populateStartScreen("Subsequent");

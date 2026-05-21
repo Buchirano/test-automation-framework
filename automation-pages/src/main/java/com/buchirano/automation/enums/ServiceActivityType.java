@@ -1,7 +1,7 @@
 package com.buchirano.automation.enums;
 
 /**
- * Enum representing Service Activity Type options used across the CeRRT
+ * Enum representing Service Activity Type options used across the PortalRM
  * Availability modal and the CaMEO Interment screen.
  */
 public enum ServiceActivityType {

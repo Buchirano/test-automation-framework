@@ -7,10 +7,10 @@ import com.buchirano.automation.core.AutomatedObject;
 
 /**
  * Page class encapsulating mapped element paths and interaction methods
- * for the Decedent Search modal within CaMEO Case Establishment.
+ * for the Decedent Search modal within NexusCM Case Management.
  *
  * <p><b>Modal:</b> Decedent / Previous Decedent Search</p>
- * <p><b>Layer:</b> Page Object (Application — CaMEO)</p>
+ * <p><b>Layer:</b> Page Object (Application — NexusCM)</p>
  */
 public class DecedentSearchModalPage extends BasePageClass {
 

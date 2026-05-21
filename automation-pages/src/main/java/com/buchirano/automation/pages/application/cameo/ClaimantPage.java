@@ -21,7 +21,7 @@ import com.buchirano.automation.core.AutomatedObject;
  * demographic details, and managing the Urn/Plaque search modal.</p>
  *
  * <p><b>Screen:</b> Case Establishment — Claimant Details</p>
- * <p><b>Layer:</b> Page Object (Application — CaMEO)</p>
+ * <p><b>Layer:</b> Page Object (Application — NexusCM)</p>
  */
 public class ClaimantPage extends BasePageClass {
 

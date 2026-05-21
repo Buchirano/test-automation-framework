@@ -5,10 +5,10 @@ import java.util.List;
 import com.buchirano.automation.core.AutomatedObject;
 
 /**
- * Page class for the Organization Search modal within CaMEO Case Establishment.
+ * Page class for the Organization Search modal within NexusCM Case Management.
  *
  * <p><b>Modal:</b> Organization Search</p>
- * <p><b>Layer:</b> Page Object (Application — CaMEO)</p>
+ * <p><b>Layer:</b> Page Object (Application — NexusCM)</p>
  */
 public class OrganizationsSearchModal extends ModalPageClass {
 

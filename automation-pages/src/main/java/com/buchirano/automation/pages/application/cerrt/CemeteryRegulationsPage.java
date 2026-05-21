@@ -8,9 +8,9 @@ import com.buchirano.automation.core.Search;
 
 /**
  * Page class encapsulating all mapped element paths and interaction methods
- * for the Cemetery Regulations tab within the CeRRT Cemetery Details screen.
+ * for the Cemetery Regulations tab within the PortalRM resource management screen.
  *
- * <p><b>Application:</b> CeRRT (Cemetery Scheduling and Regulations Tool)</p>
+ * <p><b>Application:</b> PortalRM Resource Management</p>
  * <p><b>Screen:</b> Cemetery Details — Cemetery Regulations Tab</p>
  * <p><b>Layer:</b> Page Object (Application)</p>
  */

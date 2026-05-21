@@ -9,7 +9,7 @@ import com.buchirano.automation.core.AutomatedObject;
 
 /**
  * Page class encapsulating mapped element paths and interaction methods
- * for modal dialogs used across the CaMEO Case Establishment application.
+ * for modal dialogs used across the NexusCM Case Management application.
  *
  * <p><b>Layer:</b> Page Object (Application — CaMEO Modal)</p>
  */

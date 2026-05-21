@@ -16,9 +16,9 @@ import com.buchirano.automation.core.Search;
 
 /**
  * Page class encapsulating all mapped element paths and interaction methods
- * for the shared Availability and Schedule modal within the CeRRT application.
+ * for the shared Availability and Schedule modal within the PortalRM application.
  *
- * <p><b>Application:</b> CeRRT (Cemetery Scheduling and Regulations Tool)</p>
+ * <p><b>Application:</b> PortalRM Resource Management</p>
  * <p><b>Layer:</b> Page Object (Application — Modal)</p>
  */
 public class ModalClass extends BasePageClass {

@@ -19,7 +19,7 @@ import com.buchirano.automation.core.AutomatedObject;
  * for the Organizations Details screen within the Case Establishment workflow.
  *
  * <p><b>Screen:</b> Case Establishment — Organizations Details</p>
- * <p><b>Layer:</b> Page Object (Application — CaMEO)</p>
+ * <p><b>Layer:</b> Page Object (Application — NexusCM)</p>
  */
 public class OrganizationsPage extends BasePageClass {
 

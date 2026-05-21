@@ -20,14 +20,14 @@ import com.buchirano.automation.core.Search;
 
 /**
  * Page class encapsulating all mapped element paths and interaction methods
- * for the Availability tab within the CeRRT Cemetery Details screen.
+ * for the Availability tab within the PortalRM resource management screen.
  *
  * <p>This class manages the full lifecycle of availability records — creating,
  * editing, deleting, searching, and validating rows in the availability table.
  * It delegates modal interactions to {@link ModalClass} for clean separation
  * of concerns.</p>
  *
- * <p><b>Application:</b> CeRRT (Cemetery Scheduling and Regulations Tool)</p>
+ * <p><b>Application:</b> PortalRM Resource Management</p>
  * <p><b>Screen:</b> Cemetery Details — Availability Tab</p>
  * <p><b>Layer:</b> Page Object (Application)</p>
  */

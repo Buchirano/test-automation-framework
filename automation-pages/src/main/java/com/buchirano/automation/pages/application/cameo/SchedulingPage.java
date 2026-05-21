@@ -11,10 +11,10 @@ import com.buchirano.automation.pages.general.BasePageClass;
 import com.buchirano.automation.core.AutomatedObject;
 
 /**
- * Page class for the Scheduling Details screen within CaMEO Case Establishment.
+ * Page class for the Scheduling Details screen within NexusCM Case Management.
  *
  * <p><b>Screen:</b> Case Establishment — Scheduling Details</p>
- * <p><b>Layer:</b> Page Object (Application — CaMEO)</p>
+ * <p><b>Layer:</b> Page Object (Application — NexusCM)</p>
  */
 public class SchedulingPage extends BasePageClass {
 

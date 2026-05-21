@@ -5,13 +5,13 @@ import com.buchirano.automation.core.AutomatedObject;
 
 /**
  * Page class encapsulating the mapped element paths and interaction methods
- * for the Activity tab within the CeRRT Cemetery Details screen.
+ * for the Activity tab within the PortalRM resource management screen.
  *
  * <p>The Activity tab provides a log of changes and actions taken on a cemetery
  * record. This class provides the accessor and click handler needed to navigate
  * to and interact with that tab.</p>
  *
- * <p><b>Application:</b> CeRRT (Cemetery Scheduling and Regulations Tool)</p>
+ * <p><b>Application:</b> PortalRM Resource Management</p>
  * <p><b>Screen:</b> Cemetery Details — Activity Tab</p>
  * <p><b>Layer:</b> Page Object (Application)</p>
  */

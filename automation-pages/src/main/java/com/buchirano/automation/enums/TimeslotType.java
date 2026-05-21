@@ -1,7 +1,7 @@
 package com.buchirano.automation.enums;
 
 /**
- * Enum representing Timeslot Type options used in the CeRRT Schedule modal.
+ * Enum representing Timeslot Type options used in the PortalRM Schedule modal.
  */
 public enum TimeslotType {
     SINGLE_INSTANCE("Single Instance"),

@@ -1,7 +1,7 @@
 package com.buchirano.automation.enums;
 
 /**
- * Enum representing Service Interval options used in the CeRRT
+ * Enum representing Service Interval options used in the PortalRM
  * Availability and Schedule modals.
  */
 public enum ServiceInterval {

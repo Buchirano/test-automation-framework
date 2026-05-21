@@ -18,9 +18,9 @@ import com.buchirano.automation.core.AutomatedObject;
 
 /**
  * Page class encapsulating all mapped element paths and interaction methods
- * for the Schedule screen within the CeRRT Cemetery Details record.
+ * for the Schedule screen within the PortalRM resource management record.
  *
- * <p><b>Application:</b> CeRRT (Cemetery Scheduling and Regulations Tool)</p>
+ * <p><b>Application:</b> PortalRM Resource Management</p>
  * <p><b>Screen:</b> Cemetery Details — Schedule Tab</p>
  * <p><b>Layer:</b> Page Object (Application)</p>
  */

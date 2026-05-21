@@ -10,9 +10,9 @@ import com.buchirano.automation.core.AutomatedObject;
 import com.buchirano.automation.core.Search;
 
 /**
- * Page class encapsulating interaction methods for the CeRRT Home page.
+ * Page class encapsulating interaction methods for the PortalRM Home page.
  *
- * <p><b>Application:</b> CeRRT (Cemetery Scheduling and Regulations Tool)</p>
+ * <p><b>Application:</b> PortalRM Resource Management</p>
  * <p><b>Screen:</b> Home</p>
  * <p><b>Layer:</b> Page Object (Application)</p>
  */

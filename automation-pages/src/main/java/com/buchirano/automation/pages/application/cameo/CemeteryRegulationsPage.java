@@ -5,14 +5,14 @@ import com.buchirano.automation.core.AutomatedObject;
 
 /**
  * Page class encapsulating mapped element paths and interaction methods
- * for the Cemetery Regulations display panel within CaMEO Case Establishment.
+ * for the Cemetery Regulations display panel within NexusCM Case Management.
  *
  * <p>This panel displays read-only cemetery regulation data including remains type,
  * service activity type, location type, honors, and regulation text tabs.
  * It also provides access to the Special Guidance button.</p>
  *
  * <p><b>Screen:</b> Cemetery Regulations Panel (CaMEO)</p>
- * <p><b>Layer:</b> Page Object (Application — CaMEO)</p>
+ * <p><b>Layer:</b> Page Object (Application — NexusCM)</p>
  */
 public class CemeteryRegulationsPage extends BasePageClass {
 

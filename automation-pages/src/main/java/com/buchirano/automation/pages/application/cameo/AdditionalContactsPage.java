@@ -22,7 +22,7 @@ import com.buchirano.automation.core.Search;
  * Additional Contacts screen.</p>
  *
  * <p><b>Screen:</b> Case Establishment — Additional Contacts</p>
- * <p><b>Layer:</b> Page Object (Application — CaMEO)</p>
+ * <p><b>Layer:</b> Page Object (Application — NexusCM)</p>
  */
 public class AdditionalContactsPage extends BasePageClass {
 

@@ -132,7 +132,7 @@ public class CaseDetailsPage extends BasePageClass {
      *
      * @return WebElement for the Veteran card anchor
      */
-    public WebElement getVeteranCard() {
+    public WebElement getApplicantCard() {
         return getElementByXPath("//li[@data-label = 'Veteran']//a");
     }
 
@@ -156,7 +156,7 @@ public class CaseDetailsPage extends BasePageClass {
      * based on another identifier in the same data row.
      *
      * @param caseIdentifier A value in the same row as the case number
-     *                       (e.g., claimant name, MBMS case name)
+     *                       (e.g., claimant name, case record name)
      * @return String XPath for the case number link in the report
      */
     public String caseNumberXpathByIdentifier(String caseIdentifier) {
@@ -243,8 +243,8 @@ public class CaseDetailsPage extends BasePageClass {
     /**
      * Clicks the Veteran card tab and waits for the page to load.
      */
-    public void clickVeteranCard() {
-        jsClick(getVeteranCard());
+    public void clickApplicantCard() {
+        jsClick(getApplicantCard());
         waitForAppLoad();
     }
 
@@ -437,8 +437,8 @@ public class CaseDetailsPage extends BasePageClass {
      *
      * @return List of WebElements representing expected field values on the Veteran card
      */
-    public List<WebElement> listOfVeteranDetailsDataToVerify() {
-        clickVeteranCard();
+    public List<WebElement> listOfApplicantDetailsDataToVerify() {
+        clickApplicantCard();
         return List.of(
                 getExpectedFieldData("Veteran", "Full Name", "Automation Test Veteran"),
                 getExpectedFieldData("Veteran", "Alias First Name", "Alias"),

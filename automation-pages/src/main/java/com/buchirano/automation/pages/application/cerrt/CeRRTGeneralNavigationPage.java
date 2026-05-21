@@ -11,20 +11,20 @@ import com.buchirano.automation.core.Search;
 
 /**
  * Page class encapsulating tab-level navigation and general interaction methods
- * for the CeRRT application.
+ * for the PortalRM application.
  *
  * <p>This class provides click handlers for all top-level and detail-level tabs
- * within CeRRT, including Home, Cemetery Details, MBMS Users, Reports, Schedule,
+ * within PortalRM, including Home, Cemetery Details, System Users, Reports, Schedule,
  * Availability, Cemetery Regulations, Activity, and Online Help.</p>
  *
- * <p><b>Application:</b> CeRRT (Cemetery Scheduling and Regulations Tool)</p>
+ * <p><b>Application:</b> PortalRM Resource Management</p>
  * <p><b>Layer:</b> Page Object (Application — Navigation)</p>
  */
 public class CeRRTGeneralNavigationPage extends BasePageClass {
 
     private AutomatedObject getHomeTab() { return getElementByXPath("//a[.='Home']/parent::*"); }
     private AutomatedObject getCemeteryDetailsTab() { return getElementByXPath("//a[@title='Cemetery Details']/parent::*"); }
-    private AutomatedObject getMBMSUsersTab() { return getElementByXPath("//a[.='MBMS Users']/parent::*"); }
+    private AutomatedObject getSystemUsersTab() { return getElementByXPath("//a[.='MBMS Users']/parent::*"); }
     private AutomatedObject getReportsTab() { return getElementByXPath("//a[.='Reports']/parent::*"); }
 
     public AutomatedObject getScheduleTab() { return getElementByXPath("//a[@data-label='Schedule']"); }
@@ -45,8 +45,8 @@ public class CeRRTGeneralNavigationPage extends BasePageClass {
         waitForSalesforceLoad();
     }
 
-    public void clickMBMSUsersTab() { getMBMSUsersTab().click(); waitForSalesforceLoad(); }
-    public void clickMBMSUsersTabTemp() { getMBMSUsersTab().click(); }
+    public void clickSystemUsersTab() { getSystemUsersTab().click(); waitForSalesforceLoad(); }
+    public void clickSystemUsersTabTemp() { getSystemUsersTab().click(); }
     public void clickReportsTab() { pageScrollUp(); getReportsTab().click(); waitForSalesforceLoad(); }
     public void clickScheduleTab() { pageScrollUp(); getScheduleTab().click(); waitForSalesforceLoad(); }
     public void clickAvailabilityTab() { pageScrollUp(); getElementByXPath("//a[@data-label='Availability']").click(); waitForSalesforceLoad(); }

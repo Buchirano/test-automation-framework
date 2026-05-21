@@ -2,12 +2,12 @@ package com.buchirano.automation.enums;
 
 /**
  * Enum storing XPath expressions for elements frequently used to verify
- * page load state and field availability across the CaMEO application.
+ * page load state and field availability across the NexusCM application.
  */
 public enum VerificationElement {
 
     START_CHEVRON("//a[@aria-selected='true']//span[contains(text(),'Start')]"),
-    VETERAN_CHEVRON("//a[@aria-selected='true']//span[contains(text(),'Veteran')]"),
+    APPLICANT_CHEVRON("//a[@aria-selected='true']//span[contains(text(),'Veteran')]"),
     MILITARY_CHEVRON("//a[@aria-selected='true']//span[contains(text(),'Military')]"),
     CLAIMANT_CHEVRON("//a[@aria-selected='true']//span[contains(text(),'Claimant')]"),
     ORGANIZATIONS_CHEVRON("//a[@aria-selected='true']//span[contains(text(),'Organizations')]"),
@@ -18,7 +18,7 @@ public enum VerificationElement {
     SUMMARY_CHEVRON("//a[@aria-selected='true']//span[contains(text(),'Summary')]"),
     RECENT_REPORTS("//a[@title='Recent' and (@aria-selected='true' or @aria-current='page')]"),
     All_REPORTS("//a[@title='All Reports' and (@aria-selected='true' or @aria-current='page')]"),
-    MBMS_CASE_DETAILS_TAB("//a[@title='MBMS Case Details' and @aria-current='page']"),
+    CASE_DETAILS_TAB("//a[@title='MBMS Case Details' and @aria-current='page']"),
     CASE_ESTABLISHMENT_TAB("//a[@title='Case Establishment' and @aria-current='page']"),
     HOME_TAB("//a[@title='Home' and @aria-current='page']");
 

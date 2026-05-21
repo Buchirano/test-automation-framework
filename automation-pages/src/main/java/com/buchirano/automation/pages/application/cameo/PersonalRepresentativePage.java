@@ -11,21 +11,21 @@ import com.buchirano.automation.pages.general.BasePageClass;
 import com.buchirano.automation.core.AutomatedObject;
 
 /**
- * Page class for the Personal Representative Details screen within CaMEO Case Establishment.
+ * Page class for the Personal Representative Details screen within NexusCM Case Management.
  *
  * <p><b>Screen:</b> Case Establishment — Personal Representative Details</p>
- * <p><b>Layer:</b> Page Object (Application — CaMEO)</p>
+ * <p><b>Layer:</b> Page Object (Application — NexusCM)</p>
  */
 public class PersonalRepresentativePage extends BasePageClass {
 
-    public final String personalRepresentativeIsVeteranCheckbox = "//*[@data-id='persRepIsVetInput']";
+    public final String personalRepresentativeIsPrimaryCheckbox = "//*[@data-id='persRepIsVetInput']";
     public final String suffixDropDown = "//*[@data-id='suffix']//button";
     public final String relationshipDropDown = "//*[@data-id='RelationshipToDecedent']//button";
     public final String relationshipValues = relationshipDropDown + "/ancestor::lightning-input-field//lightning-base-combobox-item";
     public final String suffixDropdownValues = suffixDropDown + "/ancestor::lightning-input-field//lightning-base-combobox-item";
 
     public AutomatedObject modifyContactCheckbox() { scrollIntoView(getInputXPathByDataId("modifyContactCheckbox")); return getInputByDataId("modifyContactCheckbox"); }
-    public AutomatedObject getPersonalRepresentativeIsVeteranCheckbox() { scrollIntoView(personalRepresentativeIsVeteranCheckbox); return getElementByXPath(personalRepresentativeIsVeteranCheckbox); }
+    public AutomatedObject getPersonalRepresentativeIsPrimaryCheckbox() { scrollIntoView(personalRepresentativeIsPrimaryCheckbox); return getElementByXPath(personalRepresentativeIsPrimaryCheckbox); }
     public AutomatedObject getFirstName() { scrollIntoView(getInputXPathByDataId("firstName")); return getInputByDataId("firstName"); }
     public AutomatedObject getMiddleName() { scrollIntoView(getInputXPathByDataId("middleName")); return getInputByDataId("middleName"); }
     public AutomatedObject getLastName() { scrollIntoView(getInputXPathByDataId("lastName")); return getInputByDataId("lastName"); }
@@ -49,7 +49,7 @@ public class PersonalRepresentativePage extends BasePageClass {
     public AutomatedObject getZipLookupModalXButton() { String path = "//*[@title='Close this window']"; scrollIntoView(path); return getElementByXPath(path); }
     public AutomatedObject getGridNoResults() { String path = ".//div[@class='slds-text-heading--large noResultsTitle slds-p-bottom--large']"; scrollIntoView(path); return getElementByXPath(path); }
     public AutomatedObject clearContactButton() { scrollIntoView(getButtonXPathByDataId("clearForm")); return getButtonByDataId("clearForm"); }
-    public AutomatedObject isVeteranCheckBox() { return getElementByXPath("//input[@name='MBMS_PersonalRepresentativeIsVeteran__c']"); }
+    public AutomatedObject isPrimaryApplicantCheckBox() { return getElementByXPath("//input[@name='MBMS_PersonalRepresentativeIsVeteran__c']"); }
 
     public void enterNameFields(String firstName, String middleName, String lastName, String suffix) {
         fillInputField(getFirstName(), firstName);
@@ -71,7 +71,7 @@ public class PersonalRepresentativePage extends BasePageClass {
     }
 
     public void clickModifyContactCheckbox() { modifyContactCheckbox().click(); modifyContactCheckbox().click(); }
-    public void clickIsVeteranCheckBox() { isVeteranCheckBox().click(); waitForSalesforceLoad(); }
+    public void clickIsPrimaryApplicantCheckBox() { isPrimaryApplicantCheckBox().click(); waitForSalesforceLoad(); }
     public void modifyContactFirstnameIsEnabled(boolean isEnabled) { assertEquals(checkDataFieldStatus(getModifiedContactFirstName()), isEnabled); }
     public void modifyContactMiddleNameIsEnabled(boolean isEnabled) { assertEquals(checkDataFieldStatus(getModifiedContactMiddleName()), isEnabled); }
     public void modifyContactLastNameIsEnabled(boolean isEnabled) { assertEquals(checkDataFieldStatus(getModifiedContactLastName()), isEnabled); }

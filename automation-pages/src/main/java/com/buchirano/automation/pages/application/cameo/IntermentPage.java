@@ -21,7 +21,7 @@ import com.buchirano.automation.core.AutomatedObject;
  * for the Interment Details screen within the Case Establishment workflow.
  *
  * <p><b>Screen:</b> Case Establishment — Interment Details</p>
- * <p><b>Layer:</b> Page Object (Application — CaMEO)</p>
+ * <p><b>Layer:</b> Page Object (Application — NexusCM)</p>
  */
 public class IntermentPage extends BasePageClass {
 

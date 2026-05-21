@@ -17,7 +17,7 @@ import com.buchirano.automation.core.Search;
  * for the Military Service Details screen within the Case Establishment workflow.
  *
  * <p><b>Screen:</b> Case Establishment — Military Service Details</p>
- * <p><b>Layer:</b> Page Object (Application — CaMEO)</p>
+ * <p><b>Layer:</b> Page Object (Application — NexusCM)</p>
  */
 public class MilitaryPage extends BasePageClass {
 

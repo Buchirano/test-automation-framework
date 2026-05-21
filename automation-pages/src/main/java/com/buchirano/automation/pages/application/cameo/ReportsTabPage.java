@@ -9,10 +9,10 @@ import com.buchirano.automation.pages.general.BasePageClass;
 import com.buchirano.automation.core.AutomatedObject;
 
 /**
- * Page class for the Reports tab within the CaMEO application.
+ * Page class for the Reports tab within the NexusCM application.
  *
  * <p><b>Screen:</b> Reports Tab</p>
- * <p><b>Layer:</b> Page Object (Application — CaMEO)</p>
+ * <p><b>Layer:</b> Page Object (Application — NexusCM)</p>
  */
 public class ReportsTabPage extends BasePageClass {
 
@@ -29,7 +29,7 @@ public class ReportsTabPage extends BasePageClass {
     public AutomatedObject getAllReportsMenuItem() { scrollIntoView(".//a[(text()='All Reports')]"); return getElementByInnerText("a", "All Reports"); }
     public AutomatedObject getAllReportsSearchBoxInput() { scrollIntoView(reportsSearchBox); return getElementByXPath(reportsSearchBox); }
 
-    public WebElement getMBMSCaseName(String caseName) {
+    public WebElement getCaseName(String caseName) {
         String path = "//div[.='" + caseName + "']";
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(path)));
         scrollIntoView(path);
