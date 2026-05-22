@@ -102,8 +102,8 @@ test-automation-framework/
 │       └── DriverManager.java         # Thread-safe WebDriver lifecycle management
 ├── automation-pages/                  # Page Object Model library (application module)
 │   └── src/main/java/.../pages/
-│       ├── application/cameo/         # NexusCM case management page classes (20+ pages)
-│       ├── application/cerrt/         # PortalRM resource management page classes (9 pages)
+│       ├── application/mainapp/        # CaseManagementApp page classes (20+ pages)
+│       ├── application/portal/         # ResourcePortal page classes (9 pages)
 │       ├── general/                   # Shared page classes (LoginPage, CaseDetailsPage)
 │       └── enums/                     # 28+ enum classes for dropdown and field values
 ├── automation-scripts/

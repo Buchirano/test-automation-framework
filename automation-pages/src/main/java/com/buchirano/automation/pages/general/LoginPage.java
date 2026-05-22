@@ -52,7 +52,7 @@ public class LoginPage extends LightningBasePageClass {
      */
     public String environmentURL() {
         String url;
-        if (environment.equalsIgnoreCase("int") || environment.equalsIgnoreCase("utraining")) {
+        if (environment.equalsIgnoreCase("int") || environment.equalsIgnoreCase("training")) {
             url = "https://app--" + environment + ".sandbox.my.salesforce.com/";
         } else {
             url = "https://app--" + environment + ".sandbox.my.salesforce.com/";
@@ -108,13 +108,13 @@ public class LoginPage extends LightningBasePageClass {
     /**
      * Constructs the full username by appending the environment suffix
      * and enters it into the Username field.
-     * Removes "mbms" prefix for int/utraining environments.
+     * Removes "mbms" prefix for int/training environments.
      *
      * @param user        Base username without environment suffix
      * @param environment The environment suffix to append
      */
     public void setUsername(String user, String environment) {
-        if (environment.equalsIgnoreCase("int") || environment.equalsIgnoreCase("utraining")) {
+        if (environment.equalsIgnoreCase("int") || environment.equalsIgnoreCase("training")) {
             user = user.replaceFirst("mbms", "");
         }
         String fullUsername = user + environment.toLowerCase();
@@ -230,7 +230,7 @@ public class LoginPage extends LightningBasePageClass {
      */
     public String getEnvironmentTier() {
         String env = ConfigProperties.getValue("TEST_ENV", "dev").toLowerCase();
-        if (env.contains("uat") || env.contains("utraining")
+        if (env.contains("uat") || env.contains("training")
                 || env.contains("int") || env.contains("reg")) {
             return "BETA";
         } else if (env.contains("sqa") || env.contains("qa")) {

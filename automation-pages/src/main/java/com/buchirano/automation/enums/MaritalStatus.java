@@ -2,7 +2,7 @@ package com.buchirano.automation.enums;
 
 /**
  * Enum representing Marital Status dropdown field options used across
- * Claimant and Veteran Details screens.
+ * Claimant and Applicant Details screens.
  */
 public enum MaritalStatus {
     NONE("--None--"),

@@ -12,7 +12,7 @@
 
 ## Overview
 
-This library is the Page Object Model layer in a 3-tier enterprise test automation architecture. It provides clean, reusable, and maintainable abstractions over complex Salesforce Lightning DOM structures for two application modules: **NexusCM** (case management) and **PortalRM** (resource management). Over 20 page classes, 9 portal page classes, and 28+ enum classes — all built to handle the specific rendering and interaction patterns of Salesforce Lightning at scale.
+This library is the Page Object Model layer in a 3-tier enterprise test automation architecture. It provides clean, reusable, and maintainable abstractions over complex Salesforce Lightning DOM structures for two application modules: **CaseManagementApp** (case management) and **ResourcePortal** (resource management). Over 20 page classes, 9 portal page classes, and 28+ enum classes — all built to handle the specific rendering and interaction patterns of Salesforce Lightning at scale.
 
 ---
 
@@ -28,14 +28,14 @@ This library is the Page Object Model layer in a 3-tier enterprise test automati
 ┌──────────────────────────▼───────────────────────────────────────┐
 │              TIER 2 — PAGE LAYER  ◄── THIS REPO                  │
 │                                                                  │
-│  pages/application/cameo/        enums/                          │
+│  pages/application/mainapp/        enums/                          │
 │  ├── StartPage                   ├── AuthorityForBurial          │
 │  ├── ApplicantPage               ├── BranchOfService             │
 │  ├── MilitaryPage                ├── RemainsType                 │
 │  ├── ClaimantPage                ├── VerificationElement         │
 │  └── 16 more...                 └── 24 more...                  │
 │                                                                  │
-│  pages/application/cerrt/                                        │
+│  pages/application/portal/                                        │
 │  ├── SchedulePage                                                │
 │  ├── AvailabilityPage                                            │
 │  └── 7 more...                                                   │
@@ -51,8 +51,8 @@ This library is the Page Object Model layer in a 3-tier enterprise test automati
 
 ## Features
 
-- **20+ NexusCM page classes** covering the full 10-step case management workflow
-- **9 PortalRM page classes** covering scheduling, availability, regulations, and user management
+- **20+ CaseManagementApp page classes** covering the full 10-step case management workflow
+- **9 ResourcePortal page classes** covering scheduling, availability, regulations, and user management
 - **28+ enum classes** — all valid dropdown values and picklist entries are strongly typed; no magic strings
 - **Enum-driven field interactions** — all setter methods accept typed enums for IDE autocomplete and compile-time safety
 - **Null-safe conditionals** — every interaction method guards against null or blank inputs, enabling clean data-driven testing
@@ -86,7 +86,7 @@ automation-pages/
     │   │   ├── CaseDetailsPage.java            # Case Details dashboard page
     │   │   └── LoginPage.java                  # Multi-environment login page
     │   └── application/
-    │       ├── cameo/                           # NexusCM — 20 page classes
+    │       ├── cameo/                           # CaseManagementApp — 20 page classes
     │       │   ├── StartPage.java
     │       │   ├── ApplicantPage.java
     │       │   ├── ApplicantSearchModal.java
@@ -99,7 +99,7 @@ automation-pages/
     │       │   ├── IntermentPage.java
     │       │   ├── SchedulingPage.java
     │       │   ├── SummaryPage.java
-    │       │   ├── CaMEOGeneralNavigationPage.java
+    │       │   ├── MainAppGeneralNavigationPage.java
     │       │   ├── CaseEstablishmentHeaderPage.java
     │       │   ├── CaseEstablishmentsPage.java
     │       │   ├── ReportsTabPage.java
@@ -107,7 +107,7 @@ automation-pages/
     │       │   ├── ModalPageClass.java
     │       │   ├── CemeteryRegulationsPage.java
     │       │   └── SpecialGuidancePage.java
-    │       └── cerrt/                           # PortalRM — 9 page classes
+    │       └── cerrt/                           # ResourcePortal — 9 page classes
     │           ├── HomePage.java
     │           ├── CemeteryDetailsPage.java
     │           ├── SchedulePage.java
@@ -116,7 +116,7 @@ automation-pages/
     │           ├── UsersPage.java
     │           ├── ActivityPage.java
     │           ├── ModalClass.java
-    │           └── CeRRTGeneralNavigationPage.java
+    │           └── PortalGeneralNavigationPage.java
     └── enums/                                   # 28+ enum classes
         ├── RemainsType.java
         ├── ServiceActivityType.java
@@ -130,7 +130,7 @@ automation-pages/
 
 ## Application Coverage
 
-### NexusCM — Case Management Module
+### CaseManagementApp — Case Management Module
 
 Full automation coverage of the **10-step Case Management workflow**:
 
@@ -147,7 +147,7 @@ Full automation coverage of the **10-step Case Management workflow**:
 | 9 | Scheduling | `SchedulingPage` |
 | 10 | Summary | `SummaryPage` |
 
-### PortalRM — Resource Management Module
+### ResourcePortal — Resource Management Module
 
 | Screen | Page Class |
 |---|---|
@@ -159,7 +159,7 @@ Full automation coverage of the **10-step Case Management workflow**:
 | Users | `UsersPage` |
 | Activity | `ActivityPage` |
 | Shared Modal | `ModalClass` |
-| Navigation | `CeRRTGeneralNavigationPage` |
+| Navigation | `PortalGeneralNavigationPage` |
 
 ---
 
@@ -251,7 +251,7 @@ Add as a Maven dependency:
 | Repository | Description |
 |---|---|
 | [`test-automation-framework`](https://github.com/buchirano/test-automation-framework) | Jenkins CI/CD pipeline, Salesforce CLI auth, Slack integration |
-| [`automation-scripts`](https://github.com/buchirano/automation-scripts) | Modular and execution test scripts for NexusCM and PortalRM |
+| [`automation-scripts`](https://github.com/buchirano/automation-scripts) | Modular and execution test scripts for CaseManagementApp and ResourcePortal |
 
 ---
 

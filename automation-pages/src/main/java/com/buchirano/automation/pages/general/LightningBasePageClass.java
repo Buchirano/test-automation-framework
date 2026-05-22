@@ -36,7 +36,7 @@ import utils.ConfigProperties;
  * tab and frame management, advanced presence checks that return diagnostic strings,
  * table cell reading, and test data generators.
  *
- * All 29 production page classes for NexusCM and PortalRM extend this class.
+ * All 29 production page classes for CaseManagementApp and ResourcePortal extend this class.
  *
  * @author  buchirano
  * @version 2.0
@@ -852,11 +852,11 @@ public abstract class LightningBasePageClass extends BasePageClass {
     // ─────────────────────────────────────────────
 
     /**
-     * Generates a random 9-digit SSN string for test data.
+     * Generates a random 9-digit identifier string for test data.
      *
-     * @return String random SSN value
+     * @return String random identifier value
      */
-    public String randomSSN() {
+    public String randomTaxId() {
         Random rand = new Random();
         int num = rand.nextInt(899999999 - 100000000) + 100000000;
         return String.valueOf(num);

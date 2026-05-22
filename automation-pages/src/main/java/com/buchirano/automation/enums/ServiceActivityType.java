@@ -1,8 +1,8 @@
 package com.buchirano.automation.enums;
 
 /**
- * Enum representing Service Activity Type options used across the PortalRM
- * Availability modal and the CaMEO Interment screen.
+ * Enum representing Service Activity Type options used across the ResourcePortal
+ * Availability modal and the MainApp Interment screen.
  */
 public enum ServiceActivityType {
     NONE("--None--"),

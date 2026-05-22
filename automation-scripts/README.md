@@ -12,7 +12,7 @@
 
 ## Overview
 
-This repository is **Tier 3** of a 3-tier enterprise test automation architecture. It delivers complete end-to-end regression coverage for two Salesforce Lightning application modules: **NexusCM** (case management) and **PortalRM** (resource management). Scripts are organized into two layers — modular and execution — and driven by an external JSON DataProvider pattern for maintainable, data-driven testing.
+This repository is **Tier 3** of a 3-tier enterprise test automation architecture. It delivers complete end-to-end regression coverage for two Salesforce Lightning application modules: **CaseManagementApp** (case management) and **ResourcePortal** (resource management). Scripts are organized into two layers — modular and execution — and driven by an external JSON DataProvider pattern for maintainable, data-driven testing.
 
 ---
 
@@ -33,8 +33,8 @@ This repository is **Tier 3** of a 3-tier enterprise test automation architectur
 │          TIER 3 — TEST SCRIPTS  ◄── THIS REPO                    │
 │                                                                  │
 │  testscript/modular/          testscript/execution/              │
-│  ├── cerrt/  (13 scripts)     ├── cerrt/  (3 scripts)            │
-│  └── cameo/  (14 scripts)     └── cameo/  (3 scripts)            │
+│  ├── portal/  (13 scripts)     ├── portal/  (3 scripts)            │
+│  └── mainapp/  (14 scripts)     └── mainapp/  (3 scripts)            │
 │                                                                  │
 │  dataSets/master/             utilities/                         │
 │  ├── loginData/               ├── DataReader.java                │
@@ -50,8 +50,8 @@ This repository is **Tier 3** of a 3-tier enterprise test automation architectur
 
 - **Two-layer architecture** — modular scripts cover individual screens; execution scripts chain them into full regression workflows
 - **JSON-based DataProvider** — all test data lives in external JSON files; the same scripts run across any environment without code changes
-- **13 PortalRM modular scripts** — full coverage of scheduling, availability management, regulations, and user administration
-- **14 NexusCM modular scripts** — full coverage of the 10-step case management workflow
+- **13 ResourcePortal modular scripts** — full coverage of scheduling, availability management, regulations, and user administration
+- **14 CaseManagementApp modular scripts** — full coverage of the 10-step case management workflow
 - **6 execution scripts** — 3 per module, targeting different user roles and dataset configurations
 - **4 TestNG suite profiles** — full suite, modular-only, execution-only, and module-specific variants
 - **Strongly typed constants** — `Data.java` provides all JSON field key constants; `Args.java` provides dataset selector keys; `UserRole.java` maps user roles to login dataset IDs
@@ -82,13 +82,13 @@ automation-scripts/
 │       │   └── login.json                    # 9 user role credentials
 │       └── scriptData/
 │           ├── cerrt/
-│           │   ├── availability_data.json    # portalrm_dataset_1/2/3
+│           │   ├── availability_data.json    # resourceportal_dataset_1/2/3
 │           │   ├── schedule_data.json        # portalrm_schedule_001
 │           │   ├── cemetery_regulations_data.json
 │           │   └── users_data.json
 │           └── cameo/
-│               ├── cameo_data.json           # NexusCMdataset1/2, NexusCMPreNeedDataset
-│               └── boss_data.json            # DEV/ALPHA/BETA environment data
+│               ├── mainapp_data.json           # CaseManagementDataset1/2, CaseManagementPreNeedDataset
+│               └── primary_data.json            # DEV/ALPHA/BETA environment data
 │
 ├── src/
 │   ├── utilities/
@@ -102,18 +102,18 @@ automation-scripts/
 │       ├── UserRole.java                     # User role enum — maps to login dataset IDs
 │       │
 │       ├── modular/
-│       │   ├── cerrt/                        # 13 PortalRM modular scripts
-│       │   └── cameo/                        # 14 NexusCM modular scripts
+│       │   ├── cerrt/                        # 13 ResourcePortal modular scripts
+│       │   └── cameo/                        # 14 CaseManagementApp modular scripts
 │       │
 │       ├── execution/
-│       │   ├── cerrt/                        # 3 PortalRM execution scripts
-│       │   └── cameo/                        # 3 NexusCM execution scripts
+│       │   ├── cerrt/                        # 3 ResourcePortal execution scripts
+│       │   └── cameo/                        # 3 CaseManagementApp execution scripts
 │       │
 │       └── suites/
-│           ├── cerrt_full_suite.xml
-│           ├── cerrt_modular_only_suite.xml
-│           ├── cerrt_execution_only_suite.xml
-│           └── cameo_full_suite.xml
+│           ├── portal_full_suite.xml
+│           ├── portal_modular_only_suite.xml
+│           ├── portal_execution_only_suite.xml
+│           └── mainapp_full_suite.xml
 │
 └── pom.xml
 ```
@@ -129,7 +129,7 @@ automation-scripts/
 **Execution scripts** chain modular scripts in the exact order they run during a full regression pass, under a specific user role and dataset.
 
 ```
-Execution Script — PortalRM Dataset 1 (Cemetery Director role)
+Execution Script — ResourcePortal Dataset 1 (Cemetery Director role)
 ├── LaunchOnlineHelpTest          → validates online help tab launch
 ├── SearchCemeteryDetailsTest     → finds and opens the location record
 ├── TabSelectionTest              → navigates all detail tabs
@@ -155,7 +155,7 @@ Test data is external, version-controlled JSON. No test data lives in code:
 @DataProvider(name = "availabilityData")
 public Object[][] availabilityData() {
     return DataReader.toDataProviderArray(
-        DataReader.load("scriptData/cerrt/availability_data.json"));
+        DataReader.load("scriptData/portal/availability_data.json"));
 }
 
 @Test(dataProvider = "availabilityData")
@@ -172,7 +172,7 @@ The `datasets.dir` system property resolves the root directory at runtime. Maven
 
 ## Application Coverage
 
-### PortalRM — Resource Management Module
+### ResourcePortal — Resource Management Module
 
 | Modular Script | Coverage |
 |---|---|
@@ -198,11 +198,11 @@ The `datasets.dir` system property resolves the root directory at runtime. Maven
 
 | Script | User Role | Distinguishing Steps |
 |---|---|---|
-| `CeRRTExecutionTest1` | Cemetery Director | Uses `EditLunchAvailabilityTest` |
-| `CeRRTExecutionTest2` | District Director | Uses `EditAvailabilityTest` |
-| `CeRRTExecutionTest3` | Cemetery Representative | Adds `ScheduleJumpToWeekTest` |
+| `PortalExecutionTest1` | Cemetery Director | Uses `EditLunchAvailabilityTest` |
+| `PortalExecutionTest2` | District Director | Uses `EditAvailabilityTest` |
+| `PortalExecutionTest3` | Cemetery Representative | Adds `ScheduleJumpToWeekTest` |
 
-### NexusCM — Case Management Module
+### CaseManagementApp — Case Management Module
 
 | Modular Script | Screen Covered |
 |---|---|
@@ -225,9 +225,9 @@ The `datasets.dir` system property resolves the root directory at runtime. Maven
 
 | Script | Scenario |
 |---|---|
-| `CaMEOExecutionTest1` | Full Case Establishment — NexusCM Dataset 1 |
-| `CaMEOExecutionTest2` | Full Case Establishment — NexusCM Dataset 2 |
-| `CaMEOPreNeedExecutionTest` | Pre-Need regression — Eligibility Analyst + Supervisor |
+| `MainAppExecutionTest1` | Full Case Establishment — CaseManagementApp Dataset 1 |
+| `MainAppExecutionTest2` | Full Case Establishment — CaseManagementApp Dataset 2 |
+| `MainAppPreNeedExecutionTest` | Pre-Need regression — Eligibility Analyst + Supervisor |
 
 ---
 
@@ -237,21 +237,21 @@ The `datasets.dir` system property resolves the root directory at runtime. Maven
 git clone https://github.com/buchirano/automation-scripts.git
 cd automation-scripts
 
-# Run PortalRM full suite
-mvn test -Dsuite.file=src/testscript/suites/cerrt_full_suite.xml
+# Run ResourcePortal full suite
+mvn test -Dsuite.file=src/testscript/suites/portal_full_suite.xml
 
-# Run NexusCM full suite
-mvn test -Dsuite.file=src/testscript/suites/cameo_full_suite.xml
+# Run CaseManagementApp full suite
+mvn test -Dsuite.file=src/testscript/suites/mainapp_full_suite.xml
 
-# Run PortalRM modular scripts only
-mvn test -Dsuite.file=src/testscript/suites/cerrt_modular_only_suite.xml
+# Run ResourcePortal modular scripts only
+mvn test -Dsuite.file=src/testscript/suites/portal_modular_only_suite.xml
 
-# Run PortalRM execution scripts only
-mvn test -Dsuite.file=src/testscript/suites/cerrt_execution_only_suite.xml
+# Run ResourcePortal execution scripts only
+mvn test -Dsuite.file=src/testscript/suites/portal_execution_only_suite.xml
 
 # Override dataset directory for CI/Jenkins
 mvn test -Ddatasets.dir=/workspace/automation-scripts/dataSets/master \
-         -Dsuite.file=src/testscript/suites/cerrt_full_suite.xml
+         -Dsuite.file=src/testscript/suites/portal_full_suite.xml
 ```
 
 ---

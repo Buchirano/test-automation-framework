@@ -2,7 +2,7 @@ package com.buchirano.automation.enums;
 
 /**
  * Enum storing XPath expressions for elements frequently used to verify
- * page load state and field availability across the NexusCM application.
+ * page load state and field availability across the CaseManagementApp application.
  */
 public enum VerificationElement {
 

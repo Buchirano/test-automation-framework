@@ -1,7 +1,7 @@
 package com.buchirano.automation.enums;
 
 /**
- * Enum representing Relationship field options used in Relationship to Veteran
+ * Enum representing Relationship field options used in Relationship to Beneficiary
  * and Relationship to Claimant dropdowns.
  */
 public enum Relationship {

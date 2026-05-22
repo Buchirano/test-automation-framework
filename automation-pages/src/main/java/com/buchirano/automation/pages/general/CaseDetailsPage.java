@@ -128,9 +128,9 @@ public class CaseDetailsPage extends LightningBasePageClass {
     }
 
     /**
-     * Returns a reference to the Veteran card tab.
+     * Returns a reference to the Applicant card tab.
      *
-     * @return WebElement for the Veteran card anchor
+     * @return WebElement for the Applicant card anchor
      */
     public WebElement getApplicantCard() {
         return getElementByXPath("//li[@data-label = 'Veteran']//a");
@@ -241,7 +241,7 @@ public class CaseDetailsPage extends LightningBasePageClass {
     }
 
     /**
-     * Clicks the Veteran card tab and waits for the page to load.
+     * Clicks the Applicant card tab and waits for the page to load.
      */
     public void clickApplicantCard() {
         jsClick(getApplicantCard());
@@ -432,15 +432,15 @@ public class CaseDetailsPage extends LightningBasePageClass {
     }
 
     /**
-     * Returns a list of expected field data WebElements on the Veteran card.
+     * Returns a list of expected field data WebElements on the Applicant card.
      * Navigates to the card before building the list.
      *
-     * @return List of WebElements representing expected field values on the Veteran card
+     * @return List of WebElements representing expected field values on the Applicant card
      */
     public List<WebElement> listOfApplicantDetailsDataToVerify() {
         clickApplicantCard();
         return List.of(
-                getExpectedFieldData("Veteran", "Full Name", "Automation Test Veteran"),
+                getExpectedFieldData("Veteran", "Full Name", "Automation Test Applicant"),
                 getExpectedFieldData("Veteran", "Alias First Name", "Alias"),
                 getExpectedFieldData("Veteran", "Alias Middle Name", "Automation"),
                 getExpectedFieldData("Veteran", "Alias Last Name", "Name"),
