@@ -13,7 +13,7 @@ import com.buchirano.automation.enums.LinerSize;
 import com.buchirano.automation.enums.LinerType;
 import com.buchirano.automation.enums.MilitaryHonors;
 import com.buchirano.automation.enums.ServiceActivityType;
-import com.buchirano.automation.pages.general.BasePageClass;
+import com.buchirano.automation.pages.general.LightningBasePageClass;
 import com.buchirano.automation.core.AutomatedObject;
 
 /**
@@ -23,7 +23,7 @@ import com.buchirano.automation.core.AutomatedObject;
  * <p><b>Screen:</b> Case Establishment — Interment Details</p>
  * <p><b>Layer:</b> Page Object (Application — NexusCM)</p>
  */
-public class IntermentPage extends BasePageClass {
+public class IntermentPage extends LightningBasePageClass {
 
     public final String remainsType = "//*[@data-id='remainsType']//div/button";
     public final String serviceActivityType = "//*[@data-id='burialActivityType']//div/button";

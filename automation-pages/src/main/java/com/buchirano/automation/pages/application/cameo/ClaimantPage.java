@@ -10,7 +10,7 @@ import com.buchirano.automation.enums.Gender;
 import com.buchirano.automation.enums.HomeOfRecord;
 import com.buchirano.automation.enums.MaritalStatus;
 import com.buchirano.automation.enums.Suffix;
-import com.buchirano.automation.pages.general.BasePageClass;
+import com.buchirano.automation.pages.general.LightningBasePageClass;
 import com.buchirano.automation.core.AutomatedObject;
 
 /**
@@ -23,7 +23,7 @@ import com.buchirano.automation.core.AutomatedObject;
  * <p><b>Screen:</b> Case Establishment — Claimant Details</p>
  * <p><b>Layer:</b> Page Object (Application — NexusCM)</p>
  */
-public class ClaimantPage extends BasePageClass {
+public class ClaimantPage extends LightningBasePageClass {
 
     public final String relationshipToVeteranElementSelector = "//*[@data-id='relationshipToVeteran']//button";
     public final String firstNameElementSelector = "//*[@data-id='decFirstName']//input";

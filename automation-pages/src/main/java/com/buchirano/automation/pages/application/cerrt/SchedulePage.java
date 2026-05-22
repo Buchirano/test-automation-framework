@@ -13,7 +13,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.buchirano.automation.enums.AvailabilityDays;
 import com.buchirano.automation.enums.Occurrence;
-import com.buchirano.automation.pages.general.BasePageClass;
+import com.buchirano.automation.pages.general.LightningBasePageClass;
 import com.buchirano.automation.core.AutomatedObject;
 
 /**
@@ -24,7 +24,7 @@ import com.buchirano.automation.core.AutomatedObject;
  * <p><b>Screen:</b> Cemetery Details — Schedule Tab</p>
  * <p><b>Layer:</b> Page Object (Application)</p>
  */
-public class SchedulePage extends BasePageClass {
+public class SchedulePage extends LightningBasePageClass {
 
     private final String dateSearchBox = "//label[.='Jump to Week']//following-sibling::div//child::input";
     private final String invalidDateMessage = "//*[.='Cemetery schedule cannot be viewed in the past.']";

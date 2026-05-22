@@ -8,7 +8,7 @@ import org.openqa.selenium.Keys;
 import com.buchirano.automation.enums.BranchOfService;
 import com.buchirano.automation.enums.MilitaryRank;
 import com.buchirano.automation.enums.WarPeriod;
-import com.buchirano.automation.pages.general.BasePageClass;
+import com.buchirano.automation.pages.general.LightningBasePageClass;
 import com.buchirano.automation.core.AutomatedObject;
 import com.buchirano.automation.core.Search;
 
@@ -19,7 +19,7 @@ import com.buchirano.automation.core.Search;
  * <p><b>Screen:</b> Case Establishment — Military Service Details</p>
  * <p><b>Layer:</b> Page Object (Application — NexusCM)</p>
  */
-public class MilitaryPage extends BasePageClass {
+public class MilitaryPage extends LightningBasePageClass {
 
     public final String militaryBranchServiceOptions = "//*[@class='slds-listbox__item']";
     public String militaryBranchServiceElementSelector = "//*[@data-id='bosLookup']//input";

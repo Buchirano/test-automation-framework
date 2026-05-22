@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.openqa.selenium.Keys;
 
-import com.buchirano.automation.pages.general.BasePageClass;
+import com.buchirano.automation.pages.general.LightningBasePageClass;
 import com.buchirano.automation.core.AutomatedObject;
 
 /**
@@ -13,7 +13,7 @@ import com.buchirano.automation.core.AutomatedObject;
  *
  * <p><b>Layer:</b> Page Object (Application — CaMEO Modal)</p>
  */
-public class ModalPageClass extends BasePageClass {
+public class ModalPageClass extends LightningBasePageClass {
 
     public String customSelectButton = "//*[@id='selectButton']";
 

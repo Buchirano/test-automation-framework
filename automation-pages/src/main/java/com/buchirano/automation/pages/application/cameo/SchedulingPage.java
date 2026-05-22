@@ -7,7 +7,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import com.buchirano.automation.pages.general.BasePageClass;
+import com.buchirano.automation.pages.general.LightningBasePageClass;
 import com.buchirano.automation.core.AutomatedObject;
 
 /**
@@ -16,7 +16,7 @@ import com.buchirano.automation.core.AutomatedObject;
  * <p><b>Screen:</b> Case Establishment — Scheduling Details</p>
  * <p><b>Layer:</b> Page Object (Application — NexusCM)</p>
  */
-public class SchedulingPage extends BasePageClass {
+public class SchedulingPage extends LightningBasePageClass {
 
     public final String dailyScheduleButton = getButtonXPathByDataId("dailySchedule");
     public final String refreshCemeteryButton = getButtonXPathByDataId("refreshCemetery");

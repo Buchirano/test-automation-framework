@@ -14,7 +14,7 @@ import com.buchirano.automation.enums.Impact;
 import com.buchirano.automation.enums.RemainsType;
 import com.buchirano.automation.enums.ServiceActivityType;
 import com.buchirano.automation.enums.ServiceInterval;
-import com.buchirano.automation.pages.general.BasePageClass;
+import com.buchirano.automation.pages.general.LightningBasePageClass;
 import com.buchirano.automation.core.AutomatedObject;
 import com.buchirano.automation.core.Search;
 
@@ -31,7 +31,7 @@ import com.buchirano.automation.core.Search;
  * <p><b>Screen:</b> Cemetery Details — Availability Tab</p>
  * <p><b>Layer:</b> Page Object (Application)</p>
  */
-public class AvailabilityPage extends BasePageClass {
+public class AvailabilityPage extends LightningBasePageClass {
 
     // ========================== XPath Constants ==========================
 

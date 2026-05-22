@@ -24,7 +24,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
  * @author buchirano
  * @version 1.0
  */
-public class CaseDetailsPage extends BasePageClass {
+public class CaseDetailsPage extends LightningBasePageClass {
 
     // ─────────────────────────────────────────────
     //  Private Get Methods — Element References

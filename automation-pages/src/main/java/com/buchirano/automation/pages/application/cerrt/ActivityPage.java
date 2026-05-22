@@ -1,6 +1,6 @@
 package com.buchirano.automation.pages.application.cerrt;
 
-import com.buchirano.automation.pages.general.BasePageClass;
+import com.buchirano.automation.pages.general.LightningBasePageClass;
 import com.buchirano.automation.core.AutomatedObject;
 
 /**
@@ -15,7 +15,7 @@ import com.buchirano.automation.core.AutomatedObject;
  * <p><b>Screen:</b> Cemetery Details — Activity Tab</p>
  * <p><b>Layer:</b> Page Object (Application)</p>
  */
-public class ActivityPage extends BasePageClass {
+public class ActivityPage extends LightningBasePageClass {
 
     // ========================== XPath Constants ==========================
 

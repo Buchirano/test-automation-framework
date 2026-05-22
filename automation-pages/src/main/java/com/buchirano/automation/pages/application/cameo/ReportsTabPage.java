@@ -5,7 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.buchirano.automation.enums.VerificationElement;
-import com.buchirano.automation.pages.general.BasePageClass;
+import com.buchirano.automation.pages.general.LightningBasePageClass;
 import com.buchirano.automation.core.AutomatedObject;
 
 /**
@@ -14,7 +14,7 @@ import com.buchirano.automation.core.AutomatedObject;
  * <p><b>Screen:</b> Reports Tab</p>
  * <p><b>Layer:</b> Page Object (Application — NexusCM)</p>
  */
-public class ReportsTabPage extends BasePageClass {
+public class ReportsTabPage extends LightningBasePageClass {
 
     private final CaMEOGeneralNavigationPage navigate = new CaMEOGeneralNavigationPage();
 

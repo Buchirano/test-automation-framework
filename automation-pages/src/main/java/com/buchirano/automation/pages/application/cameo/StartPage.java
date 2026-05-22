@@ -10,7 +10,7 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import com.buchirano.automation.pages.general.BasePageClass;
+import com.buchirano.automation.pages.general.LightningBasePageClass;
 import com.buchirano.automation.core.AutomatedObject;
 import com.buchirano.automation.core.Search;
 
@@ -20,7 +20,7 @@ import com.buchirano.automation.core.Search;
  * <p><b>Screen:</b> Case Establishment — Start</p>
  * <p><b>Layer:</b> Page Object (Application — NexusCM)</p>
  */
-public class StartPage extends BasePageClass {
+public class StartPage extends LightningBasePageClass {
 
     public String cemeteryDropdownElementSelector = "//*[@data-id='cemeterySelectLookUp']//input";
     public String desiredCemeteryDropdown = "//*[@title='Desired Cemetery']//input";

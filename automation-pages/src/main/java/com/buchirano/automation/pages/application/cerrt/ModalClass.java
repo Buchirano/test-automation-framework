@@ -10,7 +10,7 @@ import com.buchirano.automation.enums.RemainsType;
 import com.buchirano.automation.enums.ServiceActivityType;
 import com.buchirano.automation.enums.ServiceInterval;
 import com.buchirano.automation.enums.TimeslotType;
-import com.buchirano.automation.pages.general.BasePageClass;
+import com.buchirano.automation.pages.general.LightningBasePageClass;
 import com.buchirano.automation.core.AutomatedObject;
 import com.buchirano.automation.core.Search;
 
@@ -21,7 +21,7 @@ import com.buchirano.automation.core.Search;
  * <p><b>Application:</b> PortalRM Resource Management</p>
  * <p><b>Layer:</b> Page Object (Application — Modal)</p>
  */
-public class ModalClass extends BasePageClass {
+public class ModalClass extends LightningBasePageClass {
 
     private final String timeslotType = "//*[@data-id='timeslotType']//child::lightning-base-combobox//child::button";
     private final String description = "//*[@data-id='description']//child::textarea";

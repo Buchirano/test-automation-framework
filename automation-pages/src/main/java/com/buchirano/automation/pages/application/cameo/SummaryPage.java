@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import com.buchirano.automation.pages.general.BasePageClass;
+import com.buchirano.automation.pages.general.LightningBasePageClass;
 import com.buchirano.automation.core.AutomatedObject;
 import com.buchirano.automation.core.Search;
 
@@ -14,7 +14,7 @@ import com.buchirano.automation.core.Search;
  * <p><b>Screen:</b> Case Establishment — Summary Details</p>
  * <p><b>Layer:</b> Page Object (Application — NexusCM)</p>
  */
-public class SummaryPage extends BasePageClass {
+public class SummaryPage extends LightningBasePageClass {
 
     public final String remarksInputElement = "(//*[@class='slds-textarea'])[1]";
     public final String transferToCemeterySelectCheckbox = "//*[@data-id='transferToCemeteryInput']//span[@class='slds-checkbox_faux']";

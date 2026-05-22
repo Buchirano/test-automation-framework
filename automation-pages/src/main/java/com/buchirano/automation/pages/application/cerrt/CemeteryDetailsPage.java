@@ -2,7 +2,7 @@ package com.buchirano.automation.pages.application.cerrt;
 
 import org.openqa.selenium.Keys;
 
-import com.buchirano.automation.pages.general.BasePageClass;
+import com.buchirano.automation.pages.general.LightningBasePageClass;
 import com.buchirano.automation.core.AutomatedObject;
 import com.buchirano.automation.core.Search;
 
@@ -14,7 +14,7 @@ import com.buchirano.automation.core.Search;
  * <p><b>Screen:</b> Cemetery Details</p>
  * <p><b>Layer:</b> Page Object (Application)</p>
  */
-public class CemeteryDetailsPage extends BasePageClass {
+public class CemeteryDetailsPage extends LightningBasePageClass {
 
     public AutomatedObject getCemeteryName(String cemeteryName) {
         String xPath = "//span//a[@title='" + cemeteryName + "']";

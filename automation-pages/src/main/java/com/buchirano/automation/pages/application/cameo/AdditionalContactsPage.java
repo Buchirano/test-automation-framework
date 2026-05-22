@@ -9,7 +9,7 @@ import org.openqa.selenium.WebElement;
 import com.buchirano.automation.enums.ContactType;
 import com.buchirano.automation.enums.Relationship;
 import com.buchirano.automation.enums.Suffix;
-import com.buchirano.automation.pages.general.BasePageClass;
+import com.buchirano.automation.pages.general.LightningBasePageClass;
 import com.buchirano.automation.core.AutomatedObject;
 import com.buchirano.automation.core.Search;
 
@@ -24,7 +24,7 @@ import com.buchirano.automation.core.Search;
  * <p><b>Screen:</b> Case Establishment — Additional Contacts</p>
  * <p><b>Layer:</b> Page Object (Application — NexusCM)</p>
  */
-public class AdditionalContactsPage extends BasePageClass {
+public class AdditionalContactsPage extends LightningBasePageClass {
 
     // ========================== XPath Constants ==========================
 

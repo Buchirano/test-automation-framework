@@ -22,7 +22,7 @@ import utils.ConfigProperties;
  * @author buchirano
  * @version 1.0
  */
-public class LoginPage extends BasePageClass {
+public class LoginPage extends LightningBasePageClass {
 
     /**
      * Environment name read from config.properties (TEST_ENV).

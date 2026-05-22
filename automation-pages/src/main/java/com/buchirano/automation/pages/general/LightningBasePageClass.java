@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementClickInterceptedException;
@@ -25,58 +24,44 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 
+import base.BasePageClass;
 import com.buchirano.automation.enums.VerificationElement;
 import utils.ConfigProperties;
-import utils.DriverManager;
 
 /**
- * <b>Name:</b> BasePageClass.java
- * <p>
- * <b>Description:</b> Abstract base class inherited by all page classes in
- * this framework. Provides common WebDriver interaction methods, Salesforce
- * Lightning-specific wait strategies, XPath helpers, scroll utilities,
- * dropdown helpers, and verification utilities.
- * <p>
- * All page classes extend this base to inherit shared behavior without
- * duplicating code across the framework.
- * <p>
+ * LightningBasePageClass — Salesforce Lightning-specific extension of BasePageClass.
  *
- * @author buchirano
- * @version 1.0
+ * Extends the portable core with Lightning-aware wait chains (spinner, toast, app load),
+ * XPath builders tuned for Lightning's data-id DOM attributes, JavaScript scroll utilities,
+ * tab and frame management, advanced presence checks that return diagnostic strings,
+ * table cell reading, and test data generators.
+ *
+ * All 29 production page classes for NexusCM and PortalRM extend this class.
+ *
+ * @author  buchirano
+ * @version 2.0
  */
-public abstract class BasePageClass {
+public abstract class LightningBasePageClass extends BasePageClass {
 
-    /**
-     * WebDriver instance accessible by all child page classes.
-     */
-    protected WebDriver driver = DriverManager.getDriver();
-
-    /**
-     * JavascriptExecutor accessible by all child page classes.
-     */
-    protected JavascriptExecutor js = (JavascriptExecutor) DriverManager.getDriver();
-
-    /**
-     * Actions instance for complex keyboard and mouse interactions.
-     */
+    protected JavascriptExecutor js;
     public final Actions action;
-
-    /**
-     * FluentWait instance with configured timeout and polling settings.
-     */
-    public FluentWait<WebDriver> wait;
-
-    /**
-     * Test environment value read from config.properties (e.g., "qa", "staging").
-     */
     public String environment = ConfigProperties.getValue("TEST_ENV", "qa").toLowerCase();
 
     /**
-     * Constructor — initializes Actions and FluentWait instances.
+     * Constructor — calls portable core, then overrides wait with Lightning's 60-second
+     * FluentWait and initializes the JavascriptExecutor and Actions instances.
      */
-    public BasePageClass() {
+    public LightningBasePageClass() {
+        super();
+        this.wait = new FluentWait<>(driver)
+                .withTimeout(Duration.ofSeconds(60))
+                .pollingEvery(Duration.ofSeconds(1))
+                .ignoreAll(Arrays.asList(
+                        NoSuchElementException.class,
+                        ElementNotInteractableException.class,
+                        ElementClickInterceptedException.class));
+        this.js     = (JavascriptExecutor) driver;
         this.action = new Actions(driver);
-        this.wait   = buildFluentWait();
     }
 
     // ─────────────────────────────────────────────
@@ -85,7 +70,7 @@ public abstract class BasePageClass {
 
     /**
      * Builds an XPath string from a WebElement by reading its DOM attributes.
-     * Prioritizes data-id when available for more stable locators.
+     * Prioritizes data-id when available for more stable Lightning locators.
      *
      * @param element WebElement to derive XPath from
      * @return String XPath expression for the element
@@ -339,7 +324,7 @@ public abstract class BasePageClass {
 
     /**
      * Clicks the element matching the given visible name on screen.
-     * Waits for the page to fully load after the click.
+     * Waits for the app to fully load after the click.
      *
      * @param elementName Visible label name of the target element
      */
@@ -350,7 +335,6 @@ public abstract class BasePageClass {
 
     /**
      * Clicks a WebElement using JavaScript — bypasses standard Selenium click.
-     * Useful when an element is partially obscured or intercepted.
      * Falls back to zooming out if the element is not initially clickable.
      *
      * @param element WebElement to click via JavaScript
@@ -390,6 +374,7 @@ public abstract class BasePageClass {
      * @param element WebElement to read text from
      * @return String visible text content of the element
      */
+    @Override
     public String readText(WebElement element) {
         try {
             return element.getText();
@@ -451,7 +436,7 @@ public abstract class BasePageClass {
     }
 
     // ─────────────────────────────────────────────
-    //  Dropdown Interactions
+    //  Dropdown Interactions — Lightning (span[@title] pattern)
     // ─────────────────────────────────────────────
 
     /**
@@ -563,7 +548,6 @@ public abstract class BasePageClass {
 
     /**
      * Sets the browser zoom level using JavaScript.
-     * Useful for getting full-page visibility in headless or small-resolution mode.
      *
      * @param zoomPercent Zoom percentage (e.g., 50 for 50%, 100 for default)
      */
@@ -611,7 +595,7 @@ public abstract class BasePageClass {
     }
 
     // ─────────────────────────────────────────────
-    //  Wait Strategies
+    //  Wait Strategies — Salesforce Lightning
     // ─────────────────────────────────────────────
 
     /**
@@ -624,11 +608,8 @@ public abstract class BasePageClass {
     }
 
     /**
-     * Comprehensive page load wait combining:
-     * - Browser document ready state
-     * - Lightning loading spinner
-     * - Toast messages and loading text overlay
-     * Runs the spinner check twice to catch secondary spinners.
+     * Comprehensive page load wait combining document ready state, Lightning spinner,
+     * and toast messages. Runs the spinner check twice to catch secondary spinners.
      */
     public void waitForAppLoad() {
         waitForPageLoad();
@@ -639,15 +620,8 @@ public abstract class BasePageClass {
     }
 
     /**
-     * Waits for the browser document ready state to be "complete".
-     */
-    public void waitForPageLoad() {
-        wait.until(driver -> js.executeScript("return document.readyState").equals("complete"));
-    }
-
-    /**
      * Waits for the element matching the XPath to be visible on screen.
-     * Scrolls down page if element is not immediately visible.
+     * Scrolls down the page if the element is not immediately visible.
      *
      * @param xPath XPath of the element to wait for
      */
@@ -752,16 +726,6 @@ public abstract class BasePageClass {
     // ─────────────────────────────────────────────
 
     /**
-     * Returns whether the element matching the given XPath is present in the DOM.
-     *
-     * @param xPath XPath of the element to check
-     * @return boolean true if present, false otherwise
-     */
-    public boolean isPresent(String xPath) {
-        return !driver.findElements(By.xpath(xPath)).isEmpty();
-    }
-
-    /**
      * Checks if the specified error message text is present on the page.
      *
      * @param expectedErrorMessage The error message text to search for
@@ -831,7 +795,6 @@ public abstract class BasePageClass {
 
     /**
      * Checks whether all fields in a list have data populated.
-     * Accounts for multi-select pill display fields.
      *
      * @param elements List of WebElements to check for populated values
      * @return "true" if all fields have data, or a message listing empty ones
@@ -923,51 +886,5 @@ public abstract class BasePageClass {
      */
     public int getNumberOfObjects(List<WebElement> elements) {
         return elements.size();
-    }
-
-    /**
-     * Returns whether the framework is running in headless mode
-     * based on the HEADLESS property in config.properties.
-     *
-     * @return boolean true if headless mode is enabled
-     */
-    public boolean isHeadlessMode() {
-        return Boolean.parseBoolean(ConfigProperties.getValue("HEADLESS", "false").trim());
-    }
-
-    /**
-     * Pauses execution for the specified number of seconds.
-     * Use sparingly — prefer explicit waits where possible.
-     *
-     * @param seconds Sleep duration in seconds
-     */
-    protected void sleep(double seconds) {
-        try {
-            Thread.sleep(TimeUnit.SECONDS.toMillis((long) seconds));
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // ─────────────────────────────────────────────
-    //  Private Helpers
-    // ─────────────────────────────────────────────
-
-    /**
-     * Builds and returns a configured FluentWait instance.
-     * Timeout: 60 seconds. Polling: every 1 second.
-     * Ignores: NoSuchElementException, ElementNotInteractableException,
-     *          ElementClickInterceptedException.
-     *
-     * @return FluentWait configured instance
-     */
-    private FluentWait<WebDriver> buildFluentWait() {
-        return new FluentWait<>(driver)
-                .withTimeout(Duration.ofSeconds(60))
-                .pollingEvery(Duration.ofSeconds(1))
-                .ignoreAll(Arrays.asList(
-                        NoSuchElementException.class,
-                        ElementNotInteractableException.class,
-                        ElementClickInterceptedException.class));
     }
 }

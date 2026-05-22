@@ -2,7 +2,7 @@ package com.buchirano.automation.pages.application.cameo;
 
 import org.openqa.selenium.JavascriptExecutor;
 
-import com.buchirano.automation.pages.general.BasePageClass;
+import com.buchirano.automation.pages.general.LightningBasePageClass;
 import com.buchirano.automation.core.AutomatedObject;
 import com.buchirano.automation.core.Search;
 import com.buchirano.automation.core.WebDriverSingleton;
@@ -17,7 +17,7 @@ import com.buchirano.automation.core.WebDriverSingleton;
  * <p><b>Screen:</b> Case Establishments</p>
  * <p><b>Layer:</b> Page Object (Application — NexusCM)</p>
  */
-public class CaseEstablishmentsPage extends BasePageClass {
+public class CaseEstablishmentsPage extends LightningBasePageClass {
 
     // ========================== Element Accessors ==========================
 

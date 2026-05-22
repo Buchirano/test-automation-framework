@@ -2,7 +2,7 @@ package com.buchirano.automation.pages.application.cameo;
 
 import java.util.List;
 
-import com.buchirano.automation.pages.general.BasePageClass;
+import com.buchirano.automation.pages.general.LightningBasePageClass;
 import com.buchirano.automation.core.AutomatedObject;
 
 /**
@@ -12,7 +12,7 @@ import com.buchirano.automation.core.AutomatedObject;
  * <p><b>Modal:</b> Decedent / Previous Decedent Search</p>
  * <p><b>Layer:</b> Page Object (Application — NexusCM)</p>
  */
-public class DecedentSearchModalPage extends BasePageClass {
+public class DecedentSearchModalPage extends LightningBasePageClass {
 
     public String decedentGraveSection = "//*[@data-id='Section']//lightning-formatted-text";
     public String decedentGraveRow = "//*[@data-id='Row']//lightning-formatted-text";

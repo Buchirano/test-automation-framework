@@ -2,7 +2,7 @@ package com.buchirano.automation.pages.application.cameo;
 
 import java.util.List;
 
-import com.buchirano.automation.pages.general.BasePageClass;
+import com.buchirano.automation.pages.general.LightningBasePageClass;
 import com.buchirano.automation.core.AutomatedObject;
 import com.buchirano.automation.core.Search;
 
@@ -12,7 +12,7 @@ import com.buchirano.automation.core.Search;
  * <p><b>Screen:</b> Case Establishment — Applicant Details</p>
  * <p><b>Layer:</b> Page Object (Application — NexusCM)</p>
  */
-public class ApplicantPage extends BasePageClass {
+public class ApplicantPage extends LightningBasePageClass {
 
     public final String firstNameElementSelector = "//*[@data-id='vetFirstName']//input";
     public final String middleNameElementSelector = "//*[@data-id='vetMiddleName']//input";

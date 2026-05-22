@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import com.buchirano.automation.pages.general.BasePageClass;
+import com.buchirano.automation.pages.general.LightningBasePageClass;
 import com.buchirano.automation.core.AutomatedObject;
 import com.buchirano.automation.core.Search;
 
@@ -16,7 +16,7 @@ import com.buchirano.automation.core.Search;
  * <p><b>Screen:</b> Home</p>
  * <p><b>Layer:</b> Page Object (Application)</p>
  */
-public class HomePage extends BasePageClass {
+public class HomePage extends LightningBasePageClass {
 
     private AutomatedObject getLaunchOnlineHelpButton() {
         Search search = getSearch();

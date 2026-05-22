@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.openqa.selenium.By;
 
-import com.buchirano.automation.pages.general.BasePageClass;
+import com.buchirano.automation.pages.general.LightningBasePageClass;
 
 /**
  * Page class encapsulating mapped element paths and read methods for the
@@ -13,7 +13,7 @@ import com.buchirano.automation.pages.general.BasePageClass;
  * <p><b>Screen:</b> Case Establishment Header (all screens)</p>
  * <p><b>Layer:</b> Page Object (Application — NexusCM)</p>
  */
-public class CaseEstablishmentHeaderPage extends BasePageClass {
+public class CaseEstablishmentHeaderPage extends LightningBasePageClass {
 
     public final String versionNumber = "//div[contains(text(), 'Version Number')]";
     public final String headerCemeteryNameAndID = "//*[@data-id='headerCemeteryName']//lightning-formatted-text";

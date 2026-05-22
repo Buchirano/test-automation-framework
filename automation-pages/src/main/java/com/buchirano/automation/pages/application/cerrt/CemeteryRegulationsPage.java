@@ -2,7 +2,7 @@ package com.buchirano.automation.pages.application.cerrt;
 
 import java.util.Random;
 
-import com.buchirano.automation.pages.general.BasePageClass;
+import com.buchirano.automation.pages.general.LightningBasePageClass;
 import com.buchirano.automation.core.AutomatedObject;
 import com.buchirano.automation.core.Search;
 
@@ -14,7 +14,7 @@ import com.buchirano.automation.core.Search;
  * <p><b>Screen:</b> Cemetery Details — Cemetery Regulations Tab</p>
  * <p><b>Layer:</b> Page Object (Application)</p>
  */
-public class CemeteryRegulationsPage extends BasePageClass {
+public class CemeteryRegulationsPage extends LightningBasePageClass {
 
     private final String cemeteryRegulationsTab = "//a[@data-label='Cemetery Regulations']";
     private final String remainsTypeField = "//*[@data-field-id='RecordRemains_Type__cField']//child::div[2]//child::span";

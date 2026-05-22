@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import com.buchirano.automation.pages.general.BasePageClass;
+import com.buchirano.automation.pages.general.LightningBasePageClass;
 import com.buchirano.automation.core.AutomatedObject;
 import com.buchirano.automation.core.Search;
 
@@ -20,7 +20,7 @@ import com.buchirano.automation.core.Search;
  * <p><b>Application:</b> PortalRM Resource Management</p>
  * <p><b>Layer:</b> Page Object (Application — Navigation)</p>
  */
-public class CeRRTGeneralNavigationPage extends BasePageClass {
+public class CeRRTGeneralNavigationPage extends LightningBasePageClass {
 
     private AutomatedObject getHomeTab() { return getElementByXPath("//a[.='Home']/parent::*"); }
     private AutomatedObject getCemeteryDetailsTab() { return getElementByXPath("//a[@title='Cemetery Details']/parent::*"); }

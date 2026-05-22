@@ -7,7 +7,7 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import com.buchirano.automation.pages.general.BasePageClass;
+import com.buchirano.automation.pages.general.LightningBasePageClass;
 import com.buchirano.automation.core.AutomatedObject;
 
 /**
@@ -16,7 +16,7 @@ import com.buchirano.automation.core.AutomatedObject;
  * <p><b>Screen:</b> Case Establishment — Personal Representative Details</p>
  * <p><b>Layer:</b> Page Object (Application — NexusCM)</p>
  */
-public class PersonalRepresentativePage extends BasePageClass {
+public class PersonalRepresentativePage extends LightningBasePageClass {
 
     public final String personalRepresentativeIsPrimaryCheckbox = "//*[@data-id='persRepIsVetInput']";
     public final String suffixDropDown = "//*[@data-id='suffix']//button";

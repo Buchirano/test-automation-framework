@@ -11,7 +11,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import com.buchirano.automation.pages.general.BasePageClass;
+import com.buchirano.automation.pages.general.LightningBasePageClass;
 import com.buchirano.automation.core.AutomatedObject;
 
 /**
@@ -21,7 +21,7 @@ import com.buchirano.automation.core.AutomatedObject;
  * <p><b>Screen:</b> Case Establishment — Organizations Details</p>
  * <p><b>Layer:</b> Page Object (Application — NexusCM)</p>
  */
-public class OrganizationsPage extends BasePageClass {
+public class OrganizationsPage extends LightningBasePageClass {
 
     public final String contactSelectCheckbox = "//*[@data-id='selected']//span[@class='slds-checkbox_faux']";
     public final String contactSelectFirstCheckbox = "(//*[@data-id='selected']//span[@class='slds-checkbox_faux'])[1]";

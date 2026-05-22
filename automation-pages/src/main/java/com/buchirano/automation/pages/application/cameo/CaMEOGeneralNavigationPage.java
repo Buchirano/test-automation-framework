@@ -14,7 +14,7 @@ import com.buchirano.automation.enums.RemainsType;
 import com.buchirano.automation.enums.ServiceActivityType;
 import com.buchirano.automation.enums.VerificationElement;
 import com.buchirano.automation.enums.WarPeriod;
-import com.buchirano.automation.pages.general.BasePageClass;
+import com.buchirano.automation.pages.general.LightningBasePageClass;
 import com.buchirano.automation.core.AutomatedObject;
 
 /**
@@ -28,7 +28,7 @@ import com.buchirano.automation.core.AutomatedObject;
  * <p><b>Application:</b> NexusCM</p>
  * <p><b>Layer:</b> Page Object (Application — Navigation)</p>
  */
-public class CaMEOGeneralNavigationPage extends BasePageClass {
+public class CaMEOGeneralNavigationPage extends LightningBasePageClass {
 
     // ========================== Dependent Page Objects ==========================
 

@@ -1,6 +1,6 @@
 package com.buchirano.automation.pages.application.cameo;
 
-import com.buchirano.automation.pages.general.BasePageClass;
+import com.buchirano.automation.pages.general.LightningBasePageClass;
 import com.buchirano.automation.core.AutomatedObject;
 
 /**
@@ -14,7 +14,7 @@ import com.buchirano.automation.core.AutomatedObject;
  * <p><b>Screen:</b> Cemetery Regulations Panel (CaMEO)</p>
  * <p><b>Layer:</b> Page Object (Application — NexusCM)</p>
  */
-public class CemeteryRegulationsPage extends BasePageClass {
+public class CemeteryRegulationsPage extends LightningBasePageClass {
 
     public String cemeteryTitle = "//div[.='Cemetery Details']//following::slot/lightning-formatted-text";
     public String cemeteryRegulationsLastModifiedDate = "//label[.='Cemetery Regulations Last Modified Date']//following-sibling::lightning-output-field/div/lightning-formatted-text";
