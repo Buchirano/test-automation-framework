@@ -58,18 +58,24 @@ public class LoginTest {
 
     /**
      * Provides valid credential combinations for positive login tests.
-     * In production, these would be read from an Excel dataset file.
+     * Credentials must be injected at runtime via Jenkins -D system properties.
+     * Fails immediately with a clear error if either property is absent.
      *
      * @return Object[][] array of {username, password} pairs
      */
     @DataProvider(name = "validCredentials")
     public Object[][] validCredentials() {
-        return new Object[][] {
-            {
-                ConfigProperties.getValue("TEST_USERNAME", "testuser@example.com"),
-                ConfigProperties.getValue("TEST_PASSWORD", "TestPass123!")
-            }
-        };
+        String username = ConfigProperties.getValue("TEST_USERNAME");
+        String password = ConfigProperties.getValue("TEST_PASSWORD");
+        if (username == null || username.isBlank()) {
+            throw new IllegalStateException(
+                "TEST_USERNAME is required. Inject at runtime: -DTEST_USERNAME=<value>");
+        }
+        if (password == null || password.isBlank()) {
+            throw new IllegalStateException(
+                "TEST_PASSWORD is required. Inject at runtime: -DTEST_PASSWORD=<value>");
+        }
+        return new Object[][] {{ username, password }};
     }
 
     /**
@@ -80,8 +86,8 @@ public class LoginTest {
     @DataProvider(name = "invalidCredentials")
     public Object[][] invalidCredentials() {
         return new Object[][] {
-            { "invalid@example.com", "WrongPass1!", "Invalid username or password" },
-            { "",                    "TestPass123!", "Username is required"         },
+            { "invalid@example.com", "wrong-password", "Invalid username or password" },
+            { "",                    "any-password",   "Username is required"         },
             { "testuser@example.com", "",            "Password is required"         }
         };
     }
